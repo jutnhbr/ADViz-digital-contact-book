@@ -1,1 +1,0 @@
-This is a project for web application by Justin & Biranavan
