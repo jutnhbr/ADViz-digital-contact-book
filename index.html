@@ -3,8 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <title>AdViz</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="function.js" charset="UTF-8"></script>
 </head>
-    <body>
-        <h1>Hello World</h1>
-    </body>
+<body id="body">
+
+<!-- LOGIN FORM + HEADER -->
+<header>
+    <ul class="headerList">
+        <li style="float: right" class="headerAdvizButton"><a href="index.html">ADVIZ</a></li>
+    </ul>
+</header>
+
+<div class="login">
+    <form class="form">
+        <div class="form_header">
+            <h1>AdViz <br> Your Contact Book</h1>
+        </div>
+        <div class="form_main">
+            <div class="form_headertext">LOGIN</div>
+            <label><input type="text" placeholder="E-Mail" required/></label>
+            <label> <input type="password" placeholder="Password" required/></label>
+            <button>LOGIN</button>
+            <p id="newMemberCreate">New Member? <a id="newMemberCreateLink" href="">Create Account</a></p>
+            <a id="newMemberReset" href="">Reset Password</a>
+        </div>
+
+    </form>
+</div>
+
+<hr>
+<!-- MAP SCREEN -->
+
+<div class="map_container">
+    <div class="header">
+        <ul class="headerList">
+            <li class="headerButtons"><a href="">Map</a></li>
+            <li class="headerButtons"><a href="">Contacts</a></li>
+            <li class="headerButtons"><a href="">Latest Updates</a></li>
+            <li class="headerButtons"><a href="">About</a></li>
+            <li class="headerButtonsNoBorder"><a href="">Logout</a></li>
+            <li style="float: right" class="headerAdvizButton"><a href="index.html">ADVIZ</a></li>
+        </ul>
+    </div>
+    <div class="contactList">
+        <aside class="contact_list">
+            <table id="ul_contacts">
+                <tr>
+                    <th>Contacts</th>
+                </tr>
+                <tr>
+                    <td>Person Name 1</td>
+                </tr>
+                <tr>
+                    <td>Person Name 2</td>
+                </tr>
+                <tr>
+                    <td>Person Name 3</td>
+                </tr>
+            </table>
+        </aside>
+    </div>
+    <div class="map">
+        <iframe class="mapFrame"
+                loading="lazy"
+                allowfullscreen src="https://www.google.com/maps/embed/v1/view?zoom=12&center=52.5373%2C13.3603&key=AIzaSyBF0SvLTZkO3pThLmyHnkOrWLCBsWG3ikE">#
+        </iframe>
+    </div>
+    <div class="buttonArea">
+        <footer class="button_row">
+            <button class="mapButton">Add Contact</button>
+            <button class="mapButton">Show All Contacts</button>
+            <button class="mapButton">Show All My Contacts</button>
+        </footer>
+    </div>
+</div>
+
+
+<hr style="margin-top: 20%">
+
+<!-- ADD CONTACT SCREEN -->
+
+<div>
+    <h1>ADD CONTACT SCREEN</h1>
+</div>
+
+<hr style="margin-top: 20%">
+
+<!-- UPDATE CONTACT SCREEN -->
+
+<div>
+    <h1>UPDATE CONTACT SCREEN</h1>
+</div>
+
+</body>
 </html>
