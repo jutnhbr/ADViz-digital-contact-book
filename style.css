@@ -129,9 +129,10 @@
 
 .map_container {
     display: grid;
-    height: 500px;
-    gap: 15px;
-    grid-template-columns: 1fr 4fr 1fr;
+    height: 80%;
+    gap: 2%;
+    grid-template-columns: 2fr 4fr 1fr;
+    margin: 1%;
     grid-template-areas:
     'header header header header'
     'contactList map map map'
@@ -156,16 +157,16 @@
     display: inline-block;
 }
 
-.headerButtonsNoBorder, .headerAdvizButton {
+.headerButtonsNoBorder, .headerAdvizButton, .headerWelcomeMessage {
     display: inline-block;
 }
 
-.headerAdvizButton {
+.headerAdvizButton,  .headerWelcomeMessage {
     background-color: var(--secondary_color);
 }
 
 
-li a {
+li a,  .headerWelcomeMessage {
     display: block;
     color: var(--almost_white);
     text-align: center;
@@ -181,8 +182,8 @@ li a:hover {
 }
 /* ********** Map ********** */
 .mapFrame{
-    width: 1400px;
-    height: 700px;
+    width: 100%;
+    height: 700px ;
     border-width: medium;
     align-content: center;
     border-color: var(--almost_white);;
@@ -194,8 +195,8 @@ li a:hover {
     border: 1px solid var(--almost_white);
     border-radius: 5px;
     background-color: var(--secondary_color_low_opac);
-    padding: 5px 30px;
-    margin: 10px 5px;
+    margin: 0.5%;
+
 
 }
 .mapButton:hover {
