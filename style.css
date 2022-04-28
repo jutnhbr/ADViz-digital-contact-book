@@ -129,8 +129,10 @@
 
 .map_container {
     display: grid;
+    position: relative;
     height: 80%;
-    gap: 2%;
+    row-gap: 2%;
+    column-gap: 1%;
     grid-template-columns: 2fr 4fr 1fr;
     margin: 1%;
     grid-template-areas:
@@ -166,7 +168,7 @@
 }
 
 
-li a,  .headerWelcomeMessage {
+li a, .headerWelcomeMessage {
     display: block;
     color: var(--almost_white);
     text-align: center;
@@ -181,12 +183,26 @@ li a:hover {
     cursor: pointer;
 }
 /* ********** Map ********** */
+
+
+.map{
+    overflow:hidden;
+    padding-bottom:55%;
+    position:relative;
+    height:0;
+    border-radius: 15px;
+
+}
+
 .mapFrame{
-    width: 100%;
-    height: 700px ;
-    border-width: medium;
-    align-content: center;
-    border-color: var(--almost_white);;
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+    border-radius: 15px;
+    border-style: solid;
+    border-color: white;
 }
 
 .mapButton {
@@ -196,6 +212,7 @@ li a:hover {
     border-radius: 5px;
     background-color: var(--secondary_color_low_opac);
     margin: 0.5%;
+    position: relative;
 
 
 }
@@ -205,7 +222,31 @@ li a:hover {
 }
 
 
-td,th, #ul_contacts {
-    border: 1px solid var(--almost_white);
+#contactList {
+    overflow-x: auto;
+    overflow-y: auto;
 }
+
+#ul_contacts td,th {
+    border: 1px solid var(--almost_white);
+    width: 300em;
+    padding: 5px;
+    color: white;
+}
+#ul_contacts th {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    background-color: var(--secondary_color);
+    color: white;
+}
+#ul_contacts {
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+#ul_contacts tr {
+    background-color: var(--secondary_color_low_opac);
+}
+
+
 
