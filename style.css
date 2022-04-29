@@ -248,7 +248,6 @@ li a:hover {
 }
 #ul_contacts tr {
     background-color: var(--secondary_color_low_opac);
-    background-color: var(--secondary_color_low_opac);
 }
 
 
@@ -304,4 +303,7 @@ li a:hover {
     background: var(--hover_color);
     border: black;
     outline: black;
+}
+.add_contact_from select{
+
 }
