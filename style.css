@@ -305,5 +305,8 @@ li a:hover {
     outline: black;
 }
 .add_contact_from select{
+    height: 20px;
+    flex: 0 0 200px;
+    margin-left: 10px;
 
 }
