@@ -55,16 +55,16 @@
                     <th>Contacts</th>
                 </tr>
                 <tr>
-                    <td>Hello World</td>
+                    <td>Hello</td>
                 </tr>
                 <tr>
-                    <td>Hi There</td>
+                    <td>World</td>
                 </tr>
                 <tr>
-                    <td>Test User</td>
+                    <td>User</td>
                 </tr>
                 <tr>
-                    <td>-</td>
+                    <td>Bob</td>
                 </tr>
                 <tr>
                     <td>-</td>
@@ -110,69 +110,54 @@
 
 <!-- ADD CONTACT SCREEN -->
 
-<div class = addCONTACT>
+<form class="addContactForm">
+    <h1>Add a new Contact</h1>
+    <label for="firstName">First Name</label> <input id="firstName" type="text" required>
+    <label for="lastName">Last Name</label> <input id="lastName" type="text" required>
+    <label for="streetAndNumber">Street & Number</label> <input id="streetAndNumber" type="text" required>
+    <label for="zipcode">ZIP</label><input id="zipcode" type="text" required>
+    <label for="city">City</label>  <input id="city" type="text" required>
+    <label for="country">Country</label>  <input id="country" type="text">
+    <label for="phone">Phone</label> <input id="phone" type="tel">
+    <label for="dob">Date of birth</label> <input id="dob" type="date">
+    <label for="owner">Owner of Contact</label>
+    <select id="owner" name="User">
+        <option>Admina</option>
+        <option>Normalo</option>
+    </select>
+    <label for="private" class="privateCheckbox"> Public Contact</label><input id="private" class="privateCheckbox" type="checkbox">
+
+    <button>Add</button>
+</form>
 
 
-    <div class="add_form">
-        <form>
-
-                <div class = "add_contact_header">
-                    <h1>Add Contact</h1>
-                </div>
-
-            <div class=" add_contact_from">
-
-
-                <label>First Name <input type="text" required></label>
-                <label>Last Name <input type="text" required></label>
-                <label>Street & Number <input type="text" required></label>
-                <label>ZIP  <input type="text" required></label>
-                <label>City  <input type="text" required></label>
-                <label>Country  <input type="text"></label>
-                <label>Phone <input type="tel"></label>
-                <label>Date of birth <input type="date" ></label>
-                <label>public? <input type="checkbox" ></label>
-
-
-                    <label>user:
-                        <select name="users">
-                            <option>User1</option>
-                            <option>User2</option>
-                            <option>User3</option>
-                            <option>User4</option>
-                        </select>
-                    </label>
-
-
-
-
-
-                <br>
-                <br>
-                <br>
-
-                <button>
-                    Add
-                </button>
-
-            </div>
-
-
-
-
-
-        </form>
-    </div>
-
-</div>
-
-<hr style="margin-top: 20%">
+<hr>
 
 <!-- UPDATE CONTACT SCREEN -->
 
-<div>
-    <h1>UPDATE CONTACT SCREEN</h1>
-</div>
+<form class="addContactForm">
+    <h1>Update your Contact</h1>
+    <label for="firstNameU">First Name</label> <input id="firstNameU" type="text" value="Test" required>
+    <label for="lastNameU">Last Name</label> <input id="lastNameU" type="text" value="User" required>
+    <label for="streetAndNumberU">Street & Number</label> <input id="streetAndNumberU" type="text" value="Wilhelminenhofstraße 75A" required>
+    <label for="zipcodeU">ZIP</label><input id="zipcodeU" type="text" value="12459" required>
+    <label for="cityU">City</label>  <input id="cityU" type="text" value="Berlin" required>
+    <label for="countryU">Country</label>  <input id="countryU" type="text" value="Germany">
+    <label for="phoneU">Phone</label> <input id="phoneU" type="tel" value="030 50190">
+    <label for="dobU">Date of birth</label> <input id="dobU" type="date" value="1990-01-01">
+    <label for="ownerU">Owner of Contact</label>
+    <select id="ownerU" name="UserU">
+        <option>Admina</option>
+        <option>Normalo</option>
+    </select>
+    <label for="privateU" class="privateCheckbox"> Public Contact</label><input id="privateU" class="privateCheckbox" type="checkbox">
+
+    <button>Add</button>
+    <button>Update</button>
+    <button>Delete</button>
+</form>
+
+<hr>
 
 </body>
 </html>
