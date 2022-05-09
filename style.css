@@ -229,26 +229,6 @@ li a:hover {
     overflow-y: auto;
 }
 
-#ul_contacts td,th {
-    border: 1px solid var(--almost_white);
-    width: 300em;
-    padding: 5px;
-    color: white;
-}
-#ul_contacts th {
-    padding-top: 2%;
-    padding-bottom: 2%;
-    background-color: var(--secondary_color);
-    color: white;
-}
-#ul_contacts {
-    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-#ul_contacts tr {
-    background-color: var(--secondary_color_low_opac);
-}
 
 #addContactForm , #updateContactForm {
     background-color: var(--secondary_color_low_opac);
@@ -306,4 +286,30 @@ li a:hover {
     background: var(--hover_color);
     border: black;
     outline: black;
+}
+
+#cList {
+    counter-reset: li;
+    list-style: none;
+    padding: 0;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+#cList a {
+    position: relative;
+    display: block;
+    padding: .4em .4em .4em .8em;
+    margin: 0 0 0 2.5em;
+    background: var(--secondary_color);
+    text-decoration: none;
+    transition: all .3s ease-out;
+    border: solid 1px var(--background_main_color);
+}
+
+#cList i {
+    float: left;
+}
+
+#cList a:hover {
+    background: #DCDDE1;
 }
