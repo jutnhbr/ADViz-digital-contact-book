@@ -36,7 +36,6 @@
     position: relative;
     text-align: center;
     background-color: var(--secondary_color_low_opac);
-    background-blend-mode: soft-light;
     border-radius: 15px;
     box-shadow: 0 0 15px #000;
     padding-bottom: 25px;
