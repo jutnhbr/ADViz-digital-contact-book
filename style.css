@@ -17,7 +17,7 @@
     height: 100vh;
 }
 /* ********** LOGIN FORM ********** */
-.login {
+#login {
     display: grid;
     place-items: center;
     margin: auto;
@@ -32,7 +32,7 @@
     color: black;
 }
 
-.form {
+#form {
     position: relative;
     text-align: center;
     background-color: var(--secondary_color_low_opac);
@@ -43,14 +43,14 @@
     margin: 20px 25px;
 }
 
-.form_header {
+#form_header {
     padding: 30px;
     background-color: var(--secondary_color_low_opac);
     color: white;
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     border-radius:15px;
 }
-.form_headertext {
+#form_headertext {
     color: white;
     padding: 2%;
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -59,11 +59,11 @@
 }
 
 
-.form input {
+#form input {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     outline: 0;
     width: 90%;
-    border: 0;
+    border-color: white;
     margin: 0 0 15px;
     padding: 15px;
     box-sizing: border-box;
@@ -71,11 +71,11 @@
     border-radius:10px;
 }
 
-.form_main {
+#form_main {
     padding: 5%;
 }
 
-.form button {
+#loginBtn {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
     font-weight: bold;
@@ -89,14 +89,14 @@
     border: none;
 }
 
-.form button:hover {
+#form button:hover {
     cursor: pointer;
     background: var(--hover_color);
     border: black;
     outline: black;
 }
 
-.form label{
+#form label{
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     position: relative;
     text-align: center;
@@ -108,15 +108,16 @@
     padding: 15px;
 }
 
-.newMember {
+#newMemberCreateLink, #newMemberReset {
     color: white;
+    font-weight: bolder;
     font-size: 15px;
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* ********** MAP SCREEN ********** */
 
-.header {
+#header {
     grid-area: header;
 }
 .contactList {
@@ -129,7 +130,7 @@
     grid-area: buttonArea;
 }
 
-.map_container {
+#map_container {
     display: grid;
     position: relative;
     height: 80%;
@@ -250,7 +251,7 @@ li a:hover {
     background-color: var(--secondary_color_low_opac);
 }
 
-.addContactForm {
+#addContactForm , #updateContactForm {
     background-color: var(--secondary_color_low_opac);
     background-blend-mode: soft-light;
     border-radius: 10px;
@@ -267,7 +268,7 @@ li a:hover {
 
 }
 
-.addContactForm input, select {
+#addContactForm input, select , #updateContactForm input , select{
     grid-column: 2 / 3;
 
     border: 1px solid #9c9c9c;
@@ -275,18 +276,18 @@ li a:hover {
     margin-bottom: 0.5rem;
 }
 
-.addContactForm label {
+#addContactForm label , #updateContactForm label {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: left;
     grid-column: 1 / 2;
 }
 
-.addContactForm h1 {
+#addContactForm h1 , #updateContactForm h1 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     grid-column: 1 / 4;
 }
 
-.addContactForm button {
+#addContactForm button , #updateContactForm button {
     grid-column: 1 / 4;
 
 
@@ -301,7 +302,7 @@ li a:hover {
 }
 
 
-.addContactForm button:hover{
+#addContactForm button:hover, #updateContactForm button:hover {
     cursor: pointer;
     background: var(--hover_color);
     border: black;
