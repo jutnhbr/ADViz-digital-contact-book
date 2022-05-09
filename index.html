@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>AdViz</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="function.js" async defer></script>
+    <script src="function.js" defer></script>
+    <script src="https://kit.fontawesome.com/8268b705e0.js" async crossorigin="anonymous"></script>
 </head>
 <body id="body">
 
@@ -46,44 +47,9 @@
     </div>
     <div id="contactList">
         <aside id="contact_list">
-            <table id="ul_contacts">
-                <tr>
-                    <th>Contacts</th>
-                </tr>
-                <tr>
-                    <td>Hello</td>
-                </tr>
-                <tr>
-                    <td>World</td>
-                </tr>
-                <tr>
-                    <td>User</td>
-                </tr>
-                <tr>
-                    <td>Bob</td>
-                </tr>
-                <tr>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>-</td>
-                </tr>
-            </table>
+            <ul id="cList">
+
+            </ul>
         </aside>
     </div>
     <div class="map">
@@ -93,9 +59,9 @@
         </iframe>
     </div>
     <div class="buttonArea">
-            <button class="mapButton">Add Contact</button>
-            <button class="mapButton">Show All Contacts</button>
-            <button class="mapButton">Show All My Contacts</button>
+            <button type="button" id="addContactBtn" class="mapButton">Add Contact</button>
+            <button type="button" id="showAllContactsBtn" class="mapButton">Show All Contacts</button>
+            <button type="button" id="showMyContactsBtn" class="mapButton">Show All My Contacts</button>
     </div>
     <br>
 </div>
@@ -116,11 +82,6 @@
     <label for="country">Country</label>  <input id="country" type="text">
     <label for="phone">Phone</label> <input id="phone" type="tel">
     <label for="dob">Date of birth</label> <input id="dob" type="date">
-    <label for="owner">Owner of Contact</label>
-    <select id="owner" name="User">
-        <option>Admina</option>
-        <option>Normalo</option>
-    </select>
     <label for="private" class="privateCheckbox"> Public Contact</label><input id="private" class="privateCheckbox" type="checkbox">
 
     <button>Add</button>
@@ -141,11 +102,6 @@
     <label for="countryU">Country</label>  <input id="countryU" type="text" value="Germany">
     <label for="phoneU">Phone</label> <input id="phoneU" type="tel" value="030 50190">
     <label for="dobU">Date of birth</label> <input id="dobU" type="date" value="1990-01-01">
-    <label for="ownerU">Owner of Contact</label>
-    <select id="ownerU" name="UserU">
-        <option>Admina</option>
-        <option>Normalo</option>
-    </select>
     <label for="privateU" class="privateCheckbox"> Public Contact</label><input id="privateU" class="privateCheckbox" type="checkbox">
 
     <button>Update</button>
