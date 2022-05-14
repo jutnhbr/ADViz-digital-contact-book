@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>AdViz</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="function.js" defer></script>
+    <script type="module" src="function.js" defer></script>
+    <script type="module" src="data/user.js" defer></script>
     <script src="https://kit.fontawesome.com/8268b705e0.js" async crossorigin="anonymous"></script>
 </head>
 <body id="body">
@@ -19,6 +20,7 @@
         </div>
         <div id="form_main">
             <div id="form_headertext">LOGIN</div>
+            <div id="loginErrorMessage"></div>
             <label><input id="usernameLabel" type="text" placeholder="E-Mail or Username" required/></label>
             <label> <input id="passwordLabel" type="password" placeholder="Password" required/></label>
             <button id="loginBtn" type="button">LOGIN</button>
@@ -37,11 +39,10 @@
     <div id="header">
         <ul class="headerList">
             <li id="welcomeMessage" style="float: left" class="headerWelcomeMessage">Welcome, TestUser</li>
-            <li class="headerButtons"><a href="">Map</a></li>
-            <li class="headerButtons"><a href="">Contacts</a></li>
-            <li class="headerButtons"><a href="">Latest Updates</a></li>
-            <li class="headerButtons"><a href="">About</a></li>
-            <li class="headerButtonsNoBorder"><a href="index.html">Logout</a></li>
+            <li class="headerButtons"><a  href=""><i class="fa-solid fa-map"></i> Map</a></li>
+            <li class="headerButtons"><a href=""><i class="fa-solid fa-address-card"></i> Contacts</a></li>
+            <li class="headerButtons"><a href=""><i class="fa-solid fa-circle-info"></i> About</a></li>
+            <li class="headerButtonsNoBorder"><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             <li style="float: right" class="headerAdvizButton"><a href="index.html">ADVIZ</a></li>
         </ul>
     </div>
