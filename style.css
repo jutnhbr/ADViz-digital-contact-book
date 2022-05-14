@@ -32,6 +32,12 @@
     color: black;
 }
 
+#loginErrorMessage {
+    color: red;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
+
 #form {
     position: relative;
     text-align: center;
