@@ -41,7 +41,6 @@ document.getElementById("loginBtn").onclick = function() {
     let error = "";
 
     let userValue = username.value;
-    console.log("user" + userValue);
     let passwordValue = password.value;
     
     if(validateUser(userValue, passwordValue)) {
@@ -86,7 +85,7 @@ document.getElementById("addContactBtn").onclick = function (event) {
     document.getElementById("map_container").style.display = "none";
     document.getElementById("addContactForm").style.display = "grid";
     changeTitle("Adviz | Add Contact")
-    
+
     
 }
 // Add Contact Event -> Reads user input and calls addContact func
@@ -104,8 +103,8 @@ document.getElementById("addButton").onclick = function(event) {
     let privateForm = document.querySelector('.privateCheckbox:checked')
 
     // Returns true if checkbox was clicked, false if not
-    let checked = privateForm != null ? "true" : "false";
-    
+    let checked = privateForm != null;
+    // Created new Entry
     let newEntry = new ContactEntry(
         firstnameForm.value,
         lastnameForm.value,
@@ -117,7 +116,7 @@ document.getElementById("addButton").onclick = function(event) {
         dobForm.value,
         checked
     );
-    
+
     // Adds the new entry
     addContact(newEntry);
 
@@ -139,7 +138,8 @@ document.getElementById("addButton").onclick = function(event) {
 
 // Resets Checkbox value 
 function setCheckboxValue(checkbox,value) {
-    if(checkbox === null) return;
+    if(checkbox === null) return false;
+
     if (checkbox.checked!==value)
         checkbox.click();
 }
@@ -165,6 +165,8 @@ document.getElementById("backButtonUpdate").onclick = function(event) {
     changeTitle("Adviz | Home")
     document.getElementById("map_container").style.display = "grid";
     document.getElementById("updateContactForm").style.display = "none";
+
+    setCheckboxValue(document.querySelector('.privateCheckboxU:checked'), false);
 }
 
 
@@ -252,7 +254,7 @@ let loadContacts = (mode) => {
 let updateContact = (ContactEntry) => {
 
     changeTitle("Adviz | Update Contact")
-    
+
     document.getElementById("map_container").style.display = "none";
     document.getElementById("updateContactForm").style.display = "grid";
     // Showing data
@@ -265,8 +267,9 @@ let updateContact = (ContactEntry) => {
     document.getElementById("phoneU").value = ContactEntry.getPhone();
     document.getElementById("dobU").value = ContactEntry.getDateOfBirth();
     let box = document.getElementById("privateU")
-    setCheckboxValue(box, ContactEntry.isPublic());
-
+    if(ContactEntry.isPublic()) {
+        setCheckboxValue(box, ContactEntry.isPublic());
+    }
 }
 
 let changeTitle = (title) => {
