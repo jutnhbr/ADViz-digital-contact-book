@@ -1,6 +1,6 @@
 class ContactEntry {
 
-    constructor(name, lastname, street, zipcode, city, country, phone, dateOfBirth, owner, isPublic) {
+    constructor(name, lastname, street, zipcode, city, country, phone, dateOfBirth, isPublic) {
         this._name = name;
         this._lastname = lastname;
         this._street = street;
@@ -9,7 +9,6 @@ class ContactEntry {
         this._country = country;
         this._phone = phone;
         this._dateOfBirth = dateOfBirth;
-        this._owner = owner;
         this._isPublic = isPublic;
     }
 
@@ -39,9 +38,6 @@ class ContactEntry {
     }
     getDateOfBirth = () => {
         return this._dateOfBirth;
-    }
-    getOwner = () => {
-        return this._owner;
     }
     isPublic = () => {
         return this._isPublic;
