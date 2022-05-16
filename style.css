@@ -1,6 +1,13 @@
 /* ********** Color Scheme ********** */
 :root {
     --background_main_color: #001f3f;
+
+    --darkmode_background_color: #373747;
+    --darkmode_secondary_color: #373747;
+    --darkmode_secondary_color_low_opac:#373747 ;
+    --darkmode_hovor_color: #373747 ;
+
+
     --secondary_color: #0074D9;
     --secondary_color_low_opac: rgba(0, 116, 217, 0.37);
     --almost_white: #E5EAF5;
@@ -12,7 +19,7 @@
 /* ********** Body ********** */
 
 #body {
-    background-color: var(--background_main_color);
+   background-color: var(--background_main_color);
     background-size: 100% 100%;
     height: 100vh;
 }
@@ -294,6 +301,11 @@ li a:hover {
     outline: black;
 }
 
+#backButtonAdd, #backButtonUpdate{
+    display: flex;
+    width: 6%;
+}
+
 #cList {
     counter-reset: li;
     list-style: none;
@@ -319,3 +331,4 @@ li a:hover {
 #cList a:hover {
     background: #DCDDE1;
 }
+
