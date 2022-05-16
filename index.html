@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AdViz</title>
+    <title id="title">AdViz | Login</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="module" src="function.js" defer></script>
+    <!-- Data Script  -->
     <script type="module" src="data/user.js" defer></script>
+    <!-- Icons from Fontawesome  -->
     <script src="https://kit.fontawesome.com/8268b705e0.js" async crossorigin="anonymous"></script>
 </head>
 <body id="body">
@@ -48,9 +50,7 @@
     </div>
     <div id="contactList">
         <aside id="contact_list">
-            <ul id="cList">
-
-            </ul>
+            <ul id="cList"></ul>
         </aside>
     </div>
     <div class="map">
@@ -74,6 +74,7 @@
 <!-- ADD CONTACT SCREEN -->
 
 <form id="addContactForm">
+    <button id="backButtonAdd"><i class="fa-solid fa-circle-chevron-left"></i></button>
     <h1>Add a new Contact</h1>
     <label for="firstName">First Name</label> <input id="firstName" type="text" required>
     <label for="lastName">Last Name</label> <input id="lastName" type="text" required>
@@ -85,7 +86,7 @@
     <label for="dob">Date of birth</label> <input id="dob" type="date">
     <label for="private" class="privateCheckbox"> Public Contact</label><input id="private" class="privateCheckbox" type="checkbox">
 
-    <button>Add</button>
+    <button id="addButton">Add</button>
 </form>
 
 
@@ -94,15 +95,16 @@
 <!-- UPDATE CONTACT SCREEN -->
 
 <form id="updateContactForm">
+    <button id="backButtonUpdate"><i class="fa-solid fa-circle-chevron-left"></i></button>
     <h1>Update your Contact</h1>
-    <label for="firstNameU">First Name</label> <input id="firstNameU" type="text" value="Test" required>
-    <label for="lastNameU">Last Name</label> <input id="lastNameU" type="text" value="User" required>
-    <label for="streetAndNumberU">Street & Number</label> <input id="streetAndNumberU" type="text" value="Wilhelminenhofstraße 75A" required>
-    <label for="zipcodeU">ZIP</label><input id="zipcodeU" type="text" value="12459" required>
-    <label for="cityU">City</label>  <input id="cityU" type="text" value="Berlin" required>
-    <label for="countryU">Country</label>  <input id="countryU" type="text" value="Germany">
-    <label for="phoneU">Phone</label> <input id="phoneU" type="tel" value="030 50190">
-    <label for="dobU">Date of birth</label> <input id="dobU" type="date" value="1990-01-01">
+    <label for="firstNameU">First Name</label> <input id="firstNameU" type="text"  required>
+    <label for="lastNameU">Last Name</label> <input id="lastNameU" type="text" required>
+    <label for="streetAndNumberU">Street & Number</label> <input id="streetAndNumberU" type="text" required>
+    <label for="zipcodeU">ZIP</label><input id="zipcodeU" type="text"  required>
+    <label for="cityU">City</label>  <input id="cityU" type="text" required>
+    <label for="countryU">Country</label>  <input id="countryU" type="text" >
+    <label for="phoneU">Phone</label> <input id="phoneU" type="tel">
+    <label for="dobU">Date of birth</label> <input id="dobU" type="date" >
     <label for="privateU" class="privateCheckbox"> Public Contact</label><input id="privateU" class="privateCheckbox" type="checkbox">
 
     <button>Update</button>
