@@ -9,6 +9,7 @@
     <script type="module" src="data/user.js" defer></script>
     <!-- Icons from Fontawesome  -->
     <script src="https://kit.fontawesome.com/8268b705e0.js" async crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@googlemaps/js-api-loader@1.0.0/dist/index.min.js" defer></script>
 </head>
 <body id="body">
 
@@ -54,10 +55,7 @@
         </aside>
     </div>
     <div class="map">
-        <iframe class="mapFrame"
-                loading="lazy"
-                allowfullscreen src="https://www.google.com/maps/embed/v1/view?zoom=12&center=52.5373%2C13.3603&key=AIzaSyBF0SvLTZkO3pThLmyHnkOrWLCBsWG3ikE">#
-        </iframe>
+        <div id="mapFrame"></div>
     </div>
     <div class="buttonArea">
             <button type="button" id="addContactBtn" class="mapButton">Add Contact</button>
