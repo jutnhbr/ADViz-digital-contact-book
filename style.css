@@ -209,7 +209,7 @@ li a:hover {
 
 }
 
-.mapFrame{
+#mapFrame{
     left:0;
     top:0;
     height:100%;
