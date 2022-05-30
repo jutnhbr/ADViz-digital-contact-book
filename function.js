@@ -1,11 +1,33 @@
 import {User} from "/data/user.js";
 import {ContactEntry} from "./data/contactEntry.js";
 
+let map;
+let marker;
+
+// Inits the map screen
+let initMap = () => {
+    const loader = new google.maps.plugins.loader.Loader({
+        apiKey: "AIzaSyBF0SvLTZkO3pThLmyHnkOrWLCBsWG3ikE",
+        version: "weekly",
+        libraries: ["drawing"]
+    });
+
+    loader.load().then(() => {
+        map = new google.maps.Map(document.getElementById("mapFrame"), {
+            center: {lat: 52.520008, lng: 13.404954},
+            zoom: 15,
+        });
+    });
+}
+
+
 window.onload = function() {
     // After load up -> Only Login screen is visible
+
     document.getElementById("map_container").style.display = "none";
     document.getElementById("addContactForm").style.display = "none";
     document.getElementById("updateContactForm").style.display = "none";
+
 }
 
 // Available User Logins (Hardcoded)
@@ -183,6 +205,8 @@ let validateUser = (user, pass) => {
     if(user === "admina" && pass === "password" || user === "normalo" && pass === "password") {
         currentUser = user === "admina" ? admina : normalo;
         loginForm.style.display = "none";
+        
+        initMap();
         document.getElementById("map_container").style.display = "grid";
         document.getElementById("welcomeMessage").innerText = "Welcome, " + currentUser.getName() + ". Role: " + currentUser.getRole();
         return true;
@@ -196,11 +220,28 @@ let validateUser = (user, pass) => {
  */
 let addContact = (ContactEntry) => {
     currentUser.addContact(ContactEntry);
+    addMarker("Test", 52.530008, 13.404954);
     loadContacts("my");
 }
 
-// TODO: get geo coords from webservice
+/**
+ * Adds a new marker to the map
+ * @param label Label shown on the marker
+ * @param lat latitude
+ * @param lng longitude
+ */
+let addMarker = (label, lat, lng) => {
+    marker = new google.maps.Marker({
+        position: {lat: lat, lng: lng},
+        map: map,
+        label: label
+    });
+}
 
+// TODO: get geo coords from webservice
+let fetchGeoCoords = (adress) => {
+    // TODO: get geo coords from webservice
+}
 
 /**
  * Updates the HTML List based on the saved contacts data
