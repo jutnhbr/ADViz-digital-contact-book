@@ -1,8 +1,15 @@
 import {User} from "/data/user.js";
 import {ContactEntry} from "./data/contactEntry.js";
-
 let map;
 let marker;
+let markerList = [];
+const options = {
+    method: 'GET',
+    headers: {
+        'X-RapidAPI-Host': 'trueway-geocoding.p.rapidapi.com',
+        'X-RapidAPI-Key': '6d4ee9038amshd48d6b7ff082733p15d30ajsnf3fbcf93f965'
+    }
+};
 
 // Inits the map screen
 let initMap = () => {
@@ -12,6 +19,7 @@ let initMap = () => {
         libraries: ["drawing"]
     });
 
+
     loader.load().then(() => {
         map = new google.maps.Map(document.getElementById("mapFrame"), {
             center: {lat: 52.520008, lng: 13.404954},
@@ -20,10 +28,55 @@ let initMap = () => {
     });
 }
 
+let setMarkerOfUser = (user)=>{
+    let filter = markerList.filter(X=> X[0]=== user)
 
+    if (filter.length === 0) {
+
+        let url = "https://trueway-geocoding.p.rapidapi.com/Geocode?address=" + user.getStreet() + "%20" + user.getZipcode() + "%20" + user.getCity() + "&language=de"
+        fetch(url, options)
+            .then(response => response.json())
+            .then(response => addMarker(user, response.results[0].location["lat"], response.results[0].location["lng"]))
+            // TODO: Error handling for wrong addresses
+            .catch(err => alert(err));
+
+    }
+
+
+}
+/**
+ * Adds a new marker to the map
+ * @param user Label shown on the marker
+ * @param lat latitude
+ * @param lng longitude
+ */
+
+let addMarker = (user, lat, lng) => {
+
+    marker = new google.maps.Marker({
+        position: {lat: lat, lng: lng},
+        map: map,
+        label: user.getFullName()
+    });
+
+
+
+    markerList.push([user,marker])
+
+
+}
+let removeMark = (user)=>{
+    for (let i = 0; i < markerList.length ; i++) {
+        if(markerList[i][0] === user    ){
+            markerList[i][1].setMap(null);
+            markerList= markerList.filter(X=> X[0] !== user);
+
+        }
+
+    }
+}
 window.onload = function() {
     // After load up -> Only Login screen is visible
-
     document.getElementById("map_container").style.display = "none";
     document.getElementById("addContactForm").style.display = "none";
     document.getElementById("updateContactForm").style.display = "none";
@@ -38,12 +91,11 @@ let availableUsers = [admina, normalo];
 
 // Current User (overwritten after login)
 let currentUser = new User();
-
 // Contacts (Hardcoded)
-let contact1_admina = new ContactEntry("Unknown", "User(A)", "Street 55", "12101", "Berlin", "Germany", 353637437, "1990-06-04",  true);
-let contact2_admina = new ContactEntry("John", "Doe(A)", "Street 34", "53663", "Berlin", "Germany", 6436377, "1990-04-07", false );
-let contact1_normalo = new ContactEntry("Dennis", "Doe(N)", "Street 14", "12101", "Berlin", "Germany", 353637437, "1990-06-04", true);
-let contact2_normalo = new ContactEntry("Piet", "Doe(N)", "Street 5", "63363", "Berlin", "Germany", 88325652, "1990-06-04",true);
+let contact1_admina = new ContactEntry("Unknown", "User(A)", "Treskowallee 8", "10318", "Berlin", "Germany", 353637437, "1990-06-04",  true);
+let contact2_admina = new ContactEntry("John", "Doe(A)", "Wilhelminenhofstraße 75A", "12459", "Berlin", "Germany", 6436377, "1990-04-07", false );
+let contact1_normalo = new ContactEntry("Dennis", "Doe(N)", "Straße des 17. Juni 135", "10623", "Berlin", "Germany", 353637437, "1990-06-04", true);
+let contact2_normalo = new ContactEntry("Piet", "Doe(N)", "Kaiserswerther Str. 16-18", "14195 ", "Berlin", "Germany", 88325652, "1990-06-04",true);
 
 // Adding contacts to their user
 admina.addContact(contact1_admina);
@@ -51,20 +103,19 @@ admina.addContact(contact2_admina);
 normalo.addContact(contact1_normalo);
 normalo.addContact(contact2_normalo);
 
-// Forms 
+// Forms
 let loginForm = document.getElementById("login");
 let username = document.getElementById("usernameLabel");
 let password = document.getElementById("passwordLabel");
 
 // Events
 document.getElementById("loginBtn").onclick = function() {
-
     let errorMessage = document.getElementById("loginErrorMessage");
     let error = "";
 
     let userValue = username.value;
     let passwordValue = password.value;
-    
+
     if(validateUser(userValue, passwordValue)) {
         changeTitle("Adviz | Home");
         loadContacts("my");
@@ -108,7 +159,7 @@ document.getElementById("addContactBtn").onclick = function (event) {
     document.getElementById("addContactForm").style.display = "grid";
     changeTitle("Adviz | Add Contact")
 
-    
+
 }
 // Add Contact Event -> Reads user input and calls addContact func
 document.getElementById("addButton").onclick = function(event) {
@@ -124,6 +175,7 @@ document.getElementById("addButton").onclick = function(event) {
     let dobForm = document.getElementById("dob");
     let privateForm = document.querySelector('.privateCheckbox:checked')
 
+    // TODO: Error Handling for empty imput fields
     // Returns true if checkbox was clicked, false if not
     let checked = privateForm != null;
     // Created new Entry
@@ -145,7 +197,7 @@ document.getElementById("addButton").onclick = function(event) {
     // Hides Form and displays the map again
     document.getElementById("map_container").style.display = "grid";
     document.getElementById("addContactForm").style.display = "none";
-    
+
     // Clears input
     firstnameForm.value = "";
     lastnameForm.value = "";
@@ -158,7 +210,7 @@ document.getElementById("addButton").onclick = function(event) {
     setCheckboxValue(privateForm, false);
 }
 
-// Resets Checkbox value 
+// Resets Checkbox value
 function setCheckboxValue(checkbox,value) {
     if(checkbox === null) return false;
 
@@ -191,10 +243,6 @@ document.getElementById("backButtonUpdate").onclick = function(event) {
     setCheckboxValue(document.querySelector('.privateCheckboxU:checked'), false);
 }
 
-
-
-
-
 /**
  * Validates login data and initiates the contact list loading
  * @param user username
@@ -205,7 +253,7 @@ let validateUser = (user, pass) => {
     if(user === "admina" && pass === "password" || user === "normalo" && pass === "password") {
         currentUser = user === "admina" ? admina : normalo;
         loginForm.style.display = "none";
-        
+
         initMap();
         document.getElementById("map_container").style.display = "grid";
         document.getElementById("welcomeMessage").innerText = "Welcome, " + currentUser.getName() + ". Role: " + currentUser.getRole();
@@ -216,31 +264,13 @@ let validateUser = (user, pass) => {
 
 /**
  * Adds a contact to the users contacts and reloads the contact list
- * @param ContactEntry new contact
+ * @param contactEntry new contact
  */
-let addContact = (ContactEntry) => {
-    currentUser.addContact(ContactEntry);
-    addMarker("Test", 52.530008, 13.404954);
+let addContact = (contactEntry) => {
+    currentUser.addContact(contactEntry);
+    setMarkerOfUser(contactEntry)
+
     loadContacts("my");
-}
-
-/**
- * Adds a new marker to the map
- * @param label Label shown on the marker
- * @param lat latitude
- * @param lng longitude
- */
-let addMarker = (label, lat, lng) => {
-    marker = new google.maps.Marker({
-        position: {lat: lat, lng: lng},
-        map: map,
-        label: label
-    });
-}
-
-// TODO: get geo coords from webservice
-let fetchGeoCoords = (adress) => {
-    // TODO: get geo coords from webservice
 }
 
 /**
@@ -259,8 +289,9 @@ let updateList = (contactEntry) => {
     let listItems  = document.querySelectorAll("ul li");
     listItems.forEach(function(item) {
         item.onclick = function() {
-             let savedUser = currentUser.getContacts().find(o => o.getFullName() === this.innerText);
-             updateContact(savedUser);
+            // TODO: Fix onclick for all contacts (Admina)
+            let savedUser = currentUser.getContacts().find(o => o.getFullName() === this.innerText);
+            updateContact(savedUser);
         }
     });
 }
@@ -274,8 +305,18 @@ let loadContacts = (mode) => {
     document.getElementById("cList").innerHTML = "";
     switch(mode) {
         case "my":
-            for(let i = 0; i < currentUser.getContacts().length; i++) {
-                    updateList(currentUser.getContacts()[i]);
+            let contactList = currentUser.getContacts()
+            for(let i = 0; i < contactList.length; i++) {
+                let user = contactList[i]
+                updateList(user);
+                setMarkerOfUser(user)
+
+            }
+            let intersect = markerList.filter(X=> !contactList.includes(X[0]) ).flatMap(X=> X[0])
+            if(intersect.length !== 0){
+                intersect.forEach(elem =>{
+                    removeMark(elem);
+                })
             }
             break;
         case "all":
@@ -283,9 +324,24 @@ let loadContacts = (mode) => {
                 availableUsers.forEach(element => {
                     element.getContacts().forEach(element => {
                         updateList(element);
+                        setMarkerOfUser(element);
+
                     })
                 });
-                // TODO: Case for normalo
+            }
+            else{
+                availableUsers.forEach(element => {
+                    element.getContacts().forEach(element => {
+                        if(element.isPublic() || currentUser.getContacts().includes(element)){
+                            updateList(element);
+                            setMarkerOfUser(element);
+                        }
+
+
+                    })
+                });
+
+
             }
             break;
     }
