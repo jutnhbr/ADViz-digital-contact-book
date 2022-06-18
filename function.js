@@ -28,21 +28,22 @@ let initMap = () => {
     });
 }
 
-let setMarkerOfUser = (user)=>{
-    let filter = markerList.filter(X=> X[0]=== user)
+let setMarkerOfUser = async (user)=> {
+    let filter = markerList.filter(X => X[0] === user)
 
     if (filter.length === 0) {
 
         let url = "https://trueway-geocoding.p.rapidapi.com/Geocode?address=" + user.getStreet() + "%20" + user.getZipcode() + "%20" + user.getCity() + "&language=de"
-        fetch(url, options)
+        return fetch(url, options)
             .then(response => response.json())
-            .then(response => addMarker(user, response.results[0].location["lat"], response.results[0].location["lng"]))
-            // TODO: Error handling for wrong addresses
-            .catch(err => alert(err));
+            .then(async response => {
+                await addMarker(user, response.results[0].location["lat"], response.results[0].location["lng"])
+                return true
+            }).catch(async err => {
+                return false
+            });
 
     }
-
-
 }
 /**
  * Adds a new marker to the map
@@ -174,41 +175,75 @@ document.getElementById("addButton").onclick = function(event) {
     let phoneForm = document.getElementById("phone");
     let dobForm = document.getElementById("dob");
     let privateForm = document.querySelector('.privateCheckbox:checked')
+    
+    let errorLabel = document.getElementById("addContactErrorLabel");
+    
+    const requiredFields = [firstnameForm, lastnameForm, streetForm, zipcodeForm, cityForm];
 
-    // TODO: Error Handling for empty imput fields
-    // Returns true if checkbox was clicked, false if not
-    let checked = privateForm != null;
-    // Created new Entry
-    let newEntry = new ContactEntry(
-        firstnameForm.value,
-        lastnameForm.value,
-        streetForm.value,
-        zipcodeForm.value,
-        cityForm.value,
-        countryForm.value,
-        phoneForm.value,
-        dobForm.value,
-        checked
-    );
+    // Checks if all fields are filled out by the user
+   if(!checkInput(firstnameForm, lastnameForm, streetForm, zipcodeForm, cityForm)) {
+       // Returns true if checkbox was clicked, false if not
+       let checked = privateForm != null;
+       // Created new Entry
+       let newEntry = new ContactEntry(
+           firstnameForm.value,
+           lastnameForm.value,
+           streetForm.value,
+           zipcodeForm.value,
+           cityForm.value,
+           countryForm.value,
+           phoneForm.value,
+           dobForm.value,
+           checked
+       );
+       // Adds the new entry
+       addContact(newEntry);
 
-    // Adds the new entry
-    addContact(newEntry);
+       // Hides Form and displays the map again
+       document.getElementById("map_container").style.display = "grid";
+       document.getElementById("addContactForm").style.display = "none";
 
-    // Hides Form and displays the map again
-    document.getElementById("map_container").style.display = "grid";
-    document.getElementById("addContactForm").style.display = "none";
-
-    // Clears input
-    firstnameForm.value = "";
-    lastnameForm.value = "";
-    streetForm.value = "";
-    zipcodeForm.value = "";
-    cityForm.value = "";
-    countryForm.value = "";
-    phoneForm.value = "";
-    dobForm.value = "";
-    setCheckboxValue(privateForm, false);
+       // Clears input
+       firstnameForm.value = "";
+       lastnameForm.value = "";
+       streetForm.value = "";
+       zipcodeForm.value = "";
+       cityForm.value = "";
+       countryForm.value = "";
+       phoneForm.value = "";
+       dobForm.value = "";
+       setCheckboxValue(privateForm, false);
+       // Resets Error Text
+       errorLabel.innerText = "";
+   }
+   else {
+       errorLabel.innerText = "Please fill out all required fields!";
+       requiredFields.forEach(element => {
+           element.style.borderColor = "red";
+       })
+   }
+    
 }
+
+/**
+ * Checks if required fields are filled out 
+ * @param firstnameForm first name input
+ * @param lastnameForm last name input
+ * @param streetForm street input 
+ * @param zipcodeForm zipcode input
+ * @param cityForm city input
+ * @returns {boolean} true if contains one or more empty fields 
+ */
+let checkInput = (firstnameForm, lastnameForm, streetForm, zipcodeForm, cityForm) => {
+    let fields = [
+        firstnameForm.value, 
+        lastnameForm.value, 
+        streetForm.value, 
+        zipcodeForm.value, 
+        cityForm.value];
+    return fields.includes("");
+}
+
 
 // Resets Checkbox value
 function setCheckboxValue(checkbox,value) {
@@ -266,10 +301,12 @@ let validateUser = (user, pass) => {
  * Adds a contact to the users contacts and reloads the contact list
  * @param contactEntry new contact
  */
-let addContact = (contactEntry) => {
-    currentUser.addContact(contactEntry);
-    setMarkerOfUser(contactEntry)
-
+let addContact = async (contactEntry) => {
+    let res = await setMarkerOfUser(contactEntry)
+    if (res === true)
+        currentUser.addContact(contactEntry);
+    else if (res === false)
+        alert("Der Kontakt: "+contactEntry.getFullName()+" konnte nicht hínzugefügt werden (Ungültige Adresse).")
     loadContacts("my");
 }
 
@@ -289,8 +326,10 @@ let updateList = (contactEntry) => {
     let listItems  = document.querySelectorAll("ul li");
     listItems.forEach(function(item) {
         item.onclick = function() {
-            // TODO: Fix onclick for all contacts (Admina)
             let savedUser = currentUser.getContacts().find(o => o.getFullName() === this.innerText);
+            if(!savedUser) {
+                savedUser = availableUsers.find(o => o.getName() !== currentUser.getName()).getContacts().find(o => o.getFullName() === this.innerText)
+            }
             updateContact(savedUser);
         }
     });
