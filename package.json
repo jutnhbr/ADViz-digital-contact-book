@@ -1,0 +1,27 @@
+{
+  "name": "biri_justin-wad20222",
+  "version": "1.0.0",
+  "description": "Digital Contact-book with GeoCoding and Maps Implementation",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jutnhbr/biri_justin-WAD2022.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jutnhbr/biri_justin-WAD2022/issues"
+  },
+  "homepage": "https://github.com/jutnhbr/biri_justin-WAD2022#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongodb": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
