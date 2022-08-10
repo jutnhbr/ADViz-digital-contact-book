@@ -6,9 +6,8 @@ let markerList = [];
 
 window.onload = async function () {
     // After load up -> Only Login screen is visible
-    document.getElementById("map_container").style.display = "none";
-    document.getElementById("addContactForm").style.display = "none";
-    document.getElementById("updateContactForm").style.display = "none";
+    loadLoginScreen()
+    hideAlert()
     await initMap();
 
 }
@@ -18,8 +17,18 @@ let usernameField = document.getElementById("usernameLabel");
 let passwordField = document.getElementById("passwordLabel");
 let loginForm = document.getElementById("login");
 let errorMessage = document.getElementById("loginErrorMessage");
+let mapContainer = document.getElementById("map_container");
+let addContactForm = document.getElementById("addContactForm");
+let updateContactForm = document.getElementById("updateContactForm");
+let welcomeMessageLabel = document.getElementById("welcomeMessage");
+let alertBox = document.getElementById("alert");
+
+
+
 // Current Username and Role
 let currentUserInformation = new User();
+//
+let selectedContact;
 
 // Inits the map screen
 let initMap = async () => {
@@ -59,6 +68,7 @@ document.getElementById("loginBtn").onclick = async function () {
         let user = await response.json();
         if (loadMapScreen(user)) {
             await loadContacts(currentUserInformation, "user")
+            displayAlert("Login successful");
         }
     }
 }
@@ -85,16 +95,16 @@ document.getElementById("showMyContactsBtn").onclick = function() {
  */
 document.getElementById("backButtonAdd").onclick = function(event) {
     event.preventDefault();
-    document.getElementById("map_container").style.display = "grid";
-    document.getElementById("addContactForm").style.display = "none";
+    mapContainer.style.display = "grid";
+    addContactForm.style.display = "none";
 }
 /**
  * Back button event for the update contact form.
  */
 document.getElementById("backButtonUpdate").onclick = function(event) {
     event.preventDefault();
-    document.getElementById("map_container").style.display = "grid";
-    document.getElementById("updateContactForm").style.display = "none";
+    mapContainer.style.display = "grid";
+    updateContactForm.style.display = "none";
 
     setCheckboxValue(document.querySelector('.privateCheckboxU:checked'), false);
 }
@@ -103,8 +113,8 @@ document.getElementById("backButtonUpdate").onclick = function(event) {
  */
 document.getElementById("addContactBtn").onclick = function (event) {
     event.preventDefault();
-    document.getElementById("map_container").style.display = "none";
-    document.getElementById("addContactForm").style.display = "grid";
+    mapContainer.style.display = "none";
+    addContactForm.style.display = "grid";
 
 }
 /**
@@ -112,6 +122,122 @@ document.getElementById("addContactBtn").onclick = function (event) {
  */
 document.getElementById("addButton").onclick = async function(event) {
     event.preventDefault();
+    await addNewContact();
+
+
+}
+document.getElementById("deleteContactButton").onclick = async function(event) {
+    event.preventDefault();
+    await deleteContact(selectedContact);
+    updateContactForm.style.display = "none";
+    mapContainer.style.display = "grid";
+}
+document.getElementById("notifyCloseButton").onclick = function(event) {
+    event.preventDefault();
+    hideAlert();
+}
+document.getElementById("logoutBtn").onclick = function(event) {
+    event.preventDefault();
+    loadLoginScreen();
+    logout();
+
+}
+
+
+
+/**
+ * Loads the map screen and sets the current user information. Hides the login screen and shows the map screen. Also sets
+ * the welcome message.
+ * @param userPOJO User Object received after successful login
+ * @returns {boolean} Returns true if loading was successful
+ */
+let loadMapScreen = (userPOJO) => {
+    currentUserInformation = new User(userPOJO.name, userPOJO.role);
+    loginForm.style.display = "none";
+    mapContainer.style.display = "grid";
+    welcomeMessageLabel.innerText = "Welcome, " + currentUserInformation.getName() + ". Role: " + currentUserInformation.getRole();
+    return true;
+}
+
+let loadedContacts = [];
+
+let loadContacts = async (user, mode) => {
+
+    let response;
+    let userData = user.getName();
+
+    response = await fetch("/contacts/?userData=" + userData + "&reqMode=" + mode, {
+        method: "GET",
+        headers: {'Content-Type': 'application/json'},
+    })
+
+    if (response.status === 401) {
+        errorMessage.innerText = await response.text();
+    } else {
+        loadedContacts = await response.json();
+        clearList();
+        clearMarkerList();
+        loadedContacts.forEach(contact => {
+            updateList(contact);
+            addMarker(contact, contact["lat"], contact["lng"]);
+        })
+    }
+}
+
+/**
+ * Inserts the data of the loaded contacts into the list.
+ * @param contactEntry Contact Object received after loading the contacts
+ */
+let updateList = (contactEntry) => {
+    let newEntry = document.createElement("LI");
+    newEntry.classList.add('contactsListItem');
+    newEntry.innerHTML = '<a href="#"><i class="fa-solid fa-address-card"></i> ' + contactEntry["firstName"] + " " + contactEntry["lastName"] + '</a>'
+    document.getElementById("cList").appendChild(newEntry);
+
+    // Adds onClickEvents for each item in the List
+    let listItems  = document.querySelectorAll("ul li");
+    listItems.forEach(function(item) {
+        item.onclick = function() {
+            selectedContact = loadedContacts.find(o => o["firstName"] + " " + o["lastName"] === this.innerText);
+            updateContact(selectedContact);
+        }
+    });
+}
+
+let clearList = () => {
+    document.getElementById("cList").innerHTML = "";
+}
+
+let addMarker = (contact, lat, lng) => {
+
+    marker = new google.maps.Marker({
+        position: {lat: lat, lng: lng},
+        map: map,
+        label: contact["firstName"] + " " + contact["lastName"]
+    });
+
+    markerList.push([contact,marker])
+
+
+}
+let removeMarker = (contact)=>{
+    for (let i = 0; i < markerList.length ; i++) {
+        if(markerList[i][0] === contact    ){
+            markerList[i][1].setMap(null);
+            markerList= markerList.filter(X=> X[0] !== contact);
+
+        }
+    }
+}
+
+let clearMarkerList = ()=>{
+    for (let i = 0; i < markerList.length ; i++) {
+        markerList[i][1].setMap(null);
+    }
+    markerList = [];
+}
+
+let addNewContact = async () => {
 
     let firstnameForm = document.getElementById("firstName");
     let lastnameForm = document.getElementById("lastName");
@@ -176,92 +302,21 @@ document.getElementById("addButton").onclick = async function(event) {
             element.style.borderColor = "red";
         })
     }
-
 }
-
 /**
- * Loads the map screen and sets the current user information. Hides the login screen and shows the map screen. Also sets
- * the welcome message.
- * @param userPOJO User Object received after successful login
- * @returns {boolean} Returns true if loading was successful
+ * Deletes the selected contact from the database and the list. (Uses generated id)
+ * @param contact Contact Object to be deleted
  */
-let loadMapScreen = (userPOJO) => {
-    currentUserInformation = new User(userPOJO.name, userPOJO.role);
-    loginForm.style.display = "none";
-    document.getElementById("map_container").style.display = "grid";
-    document.getElementById("welcomeMessage").innerText = "Welcome, " + currentUserInformation.getName() + ". Role: " + currentUserInformation.getRole();
-    return true;
-}
-
-let loadedContacts = [];
-
-let loadContacts = async (user, mode) => {
-
-    let response;
-    let userData = user.getName();
-
-    response = await fetch("/contacts/?userData=" + userData + "&reqMode=" + mode, {
-        method: "GET",
-        headers: {'Content-Type': 'application/json'},
+let deleteContact = async (contact) => {
+    console.log(contact["_id"])
+    let response = await fetch("/contacts/" + contact["_id"], {
+        method: "DELETE"
     })
-
-    if (response.status === 401) {
-        errorMessage.innerText = await response.text();
-    } else {
-        loadedContacts = await response.json();
-        clearList();
-        clearMarkerList();
-        loadedContacts.forEach(contact => {
-            updateList(contact);
-            addMarker(contact, contact["lat"], contact["lng"]);
-        })
+    if(response.status === 204) {
+        await loadContacts(currentUserInformation, "user");
     }
 }
 
-/**
- * Inserts the data of the loaded contacts into the list.
- * @param contactEntry Contact Object received after loading the contacts
- */
-let updateList = (contactEntry) => {
-    let newEntry = document.createElement("LI");
-    newEntry.classList.add('contactsListItem');
-    newEntry.innerHTML = '<a href="#"><i class="fa-solid fa-address-card"></i> ' + contactEntry["firstName"] + " " + contactEntry["lastName"] + '</a>'
-    document.getElementById("cList").appendChild(newEntry);
-
-}
-
-let clearList = () => {
-    document.getElementById("cList").innerHTML = "";
-}
-
-let addMarker = (contact, lat, lng) => {
-
-    marker = new google.maps.Marker({
-        position: {lat: lat, lng: lng},
-        map: map,
-        label: contact["firstName"] + " " + contact["lastName"]
-    });
-
-    markerList.push([contact,marker])
-
-
-}
-let removeMarker = (contact)=>{
-    for (let i = 0; i < markerList.length ; i++) {
-        if(markerList[i][0] === contact    ){
-            markerList[i][1].setMap(null);
-            markerList= markerList.filter(X=> X[0] !== contact);
-
-        }
-    }
-}
-
-let clearMarkerList = ()=>{
-    for (let i = 0; i < markerList.length ; i++) {
-        markerList[i][1].setMap(null);
-    }
-    markerList = [];
-}
 
 /**
  * Checks if required fields are filled out
@@ -311,4 +366,44 @@ function setCheckboxValue(checkbox,value) {
 
     if (checkbox.checked!==value)
         checkbox.click();
+}
+
+let displayAlert = (message) => {
+    alertBox.style.display = "block";
+    alertBox.children[0].innerText = message;
+}
+
+let hideAlert = () => {
+    alertBox.style.display = "none";
+}
+
+let logout = () => {
+    currentUserInformation = null;
+    loadedContacts = [];
+}
+
+let loadLoginScreen = () => {
+    mapContainer.style.display = "none";
+    addContactForm.style.display = "none";
+    updateContactForm.style.display = "none";
+}
+
+
+let updateContact = (ContactEntry) => {
+
+    document.getElementById("map_container").style.display = "none";
+    document.getElementById("updateContactForm").style.display = "grid";
+    // Showing data
+    document.getElementById("firstNameU").value = ContactEntry["firstName"];
+    document.getElementById("lastNameU").value = ContactEntry["lastName"];
+    document.getElementById("streetAndNumberU").value = ContactEntry["street"];
+    document.getElementById("countryU").value = ContactEntry["country"];
+    document.getElementById("zipcodeU").value = ContactEntry["zipcode"];
+    document.getElementById("cityU").value = ContactEntry["city"];
+    document.getElementById("phoneU").value = ContactEntry["phone"];
+    document.getElementById("dobU").value = ContactEntry["dateOfBirth"];
+    let box = document.getElementById("privateU")
+    if(ContactEntry["isPublic"] === true) {
+        setCheckboxValue(box, ContactEntry["isPublic"]);
+    }
 }
