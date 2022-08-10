@@ -16,7 +16,6 @@
 
 <!-- LOGIN FORM  -->
 
-
 <div id="login">
     <form id="form">
         <div id="form_header">
@@ -35,7 +34,7 @@
     </form>
 </div>
 
-<!-- <hr> -->
+
 
 <!-- MAP SCREEN -->
 
@@ -46,7 +45,7 @@
             <li class="headerButtons"><a  href=""><i class="fa-solid fa-map"></i> Map</a></li>
             <li class="headerButtons"><a href=""><i class="fa-solid fa-address-card"></i> Contacts</a></li>
             <li class="headerButtons"><a href=""><i class="fa-solid fa-circle-info"></i> About</a></li>
-            <li class="headerButtonsNoBorder"><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            <li class="headerButtonsNoBorder" id="logoutBtn"><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             <li style="float: right" class="headerAdvizButton"><a href="index.html">ADVIZ</a></li>
         </ul>
     </div>
@@ -65,6 +64,7 @@
     </div>
     <br>
 </div>
+
 
 
 
@@ -108,10 +108,17 @@
     <label for="privateU" class="privateCheckbox"> Public Contact</label><input id="privateU" class="privateCheckboxU" type="checkbox">
 
     <button>Update</button>
-    <button>Delete</button>
+    <button id="deleteContactButton">Delete</button>
 </form>
 
-<!-- <hr> -->
+<!-- Alert -->
+<div id="alert">
+    <div id="notifyMessage">Test Message</div>
+    <div  id="notifyCloseButton">
+        <span class="fas fa-times"></span>
+    </div>
+</div>
+
 
 </body>
 </html>
