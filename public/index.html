@@ -39,13 +39,13 @@
 <!-- MAP SCREEN -->
 
 <div id="map_container">
-    <div id="header">
+    <div class="header">
         <ul class="headerList">
-            <li id="welcomeMessage" style="float: left" class="headerWelcomeMessage">Welcome, TestUser</li>
-            <li class="headerButtons"><a  href=""><i class="fa-solid fa-map"></i> Map</a></li>
-            <li class="headerButtons"><a href=""><i class="fa-solid fa-address-card"></i> Contacts</a></li>
-            <li class="headerButtons"><a href=""><i class="fa-solid fa-circle-info"></i> About</a></li>
-            <li class="headerButtonsNoBorder" id="logoutBtn"><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            <li class="headerWelcomeMessage" style="float: left">Welcome, TestUser</li>
+            <li class="headerButtons"><a  href="#"><i class="fa-solid fa-map"></i> Map</a></li>
+            <li class="headerButtons"><a href="#" onclick=ttest()><i class="fa-solid fa-address-card"></i> Contacts</a></li>
+            <li class="headerButtons"><a href="#"><i class="fa-solid fa-circle-info"></i> About</a></li>
+            <li class="logoutBtn"><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             <li style="float: right" class="headerAdvizButton"><a href="index.html">ADVIZ</a></li>
         </ul>
     </div>
@@ -65,6 +65,27 @@
     <br>
 </div>
 
+<div id="contactScreen">
+    <div class="header">
+        <ul class="headerList">
+            <li class="headerWelcomeMessage" style="float: left">Welcome, TestUser</li>
+            <li class="headerButtons"><a  href=""><i class="fa-solid fa-map"></i> Map</a></li>
+            <li class="headerButtons"><a href=""><i class="fa-solid fa-address-card"></i> Contacts</a></li>
+            <li class="headerButtons"><a href=""><i class="fa-solid fa-circle-info"></i> About</a></li>
+            <li class="logoutBtn"><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            <li style="float: right" class="headerAdvizButton"><a href="index.html">ADVIZ</a></li>
+        </ul>
+    </div>
+    <div id ="contactCards">
+        <div class="card">
+            <img src="img_avatar.png" alt="Avatar" style="width:100%">
+            <div class="container">
+                <h4><b>John Doe</b></h4>
+                <p>Architect & Engineer</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -78,12 +99,12 @@
     <div id="addContactErrorLabel"></div>
     <label for="firstName">First Name</label> <input id="firstName" type="text" required>
     <label for="lastName">Last Name</label> <input id="lastName" type="text" required>
-    <label for="streetAndNumber">Street & Number</label> <input id="streetAndNumber" type="text" required>
+    <label for="street">Street & Number</label> <input id="street" type="text" required>
     <label for="zipcode">ZIP</label><input id="zipcode" type="text" required>
     <label for="city">City</label>  <input id="city" type="text" required>
     <label for="country">Country</label>  <input id="country" type="text">
     <label for="phone">Phone</label> <input id="phone" type="tel">
-    <label for="dob">Date of birth</label> <input id="dob" type="date">
+    <label for="dateOfBirth">Date of birth</label> <input id="dateOfBirth" type="date">
     <label for="private" class="privateCheckbox"> Public Contact</label><input id="private" class="privateCheckbox" type="checkbox">
 
     <button id="addButton">Add</button>
@@ -97,17 +118,18 @@
 <form id="updateContactForm">
     <button id="backButtonUpdate"><i class="fa-solid fa-circle-chevron-left"></i></button>
     <h1>Update your Contact</h1>
+    <div id="updateContactErrorLabel"></div>
     <label for="firstNameU">First Name</label> <input id="firstNameU" type="text"  required>
     <label for="lastNameU">Last Name</label> <input id="lastNameU" type="text" required>
-    <label for="streetAndNumberU">Street & Number</label> <input id="streetAndNumberU" type="text" required>
+    <label for="streetU">Street & Number</label> <input id="streetU" type="text" required>
     <label for="zipcodeU">ZIP</label><input id="zipcodeU" type="text"  required>
     <label for="cityU">City</label>  <input id="cityU" type="text" required>
     <label for="countryU">Country</label>  <input id="countryU" type="text" >
     <label for="phoneU">Phone</label> <input id="phoneU" type="tel">
-    <label for="dobU">Date of birth</label> <input id="dobU" type="date" >
+    <label for="dateOfBirthU">Date of birth</label> <input id="dateOfBirthU" type="date" >
     <label for="privateU" class="privateCheckbox"> Public Contact</label><input id="privateU" class="privateCheckboxU" type="checkbox">
 
-    <button>Update</button>
+    <button id="updateContactButton">Update</button>
     <button id="deleteContactButton">Delete</button>
 </form>
 
