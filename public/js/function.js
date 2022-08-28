@@ -3,24 +3,26 @@ import {User} from "/data/user.js";
 let map;
 let marker;
 let markerList = [];
+const identifier = ["firstName", "lastName", "street", "zipcode", "city", "country", "phone", "dateOfBirth"];
 
 window.onload = async function () {
     // After load up -> Only Login screen is visible
     loadLoginScreen()
     hideAlert()
     await initMap();
+    // console.log(document.getElementsByClassName("headerButtons")[1])
 
 }
 
 // HTML Elements
 let usernameField = document.getElementById("usernameLabel");
 let passwordField = document.getElementById("passwordLabel");
-let loginForm = document.getElementById("login");
 let errorMessage = document.getElementById("loginErrorMessage");
 let mapContainer = document.getElementById("map_container");
 let addContactForm = document.getElementById("addContactForm");
 let updateContactForm = document.getElementById("updateContactForm");
-let welcomeMessageLabel = document.getElementById("welcomeMessage");
+let welcomeMessageLabel = document.getElementsByClassName("headerWelcomeMessage")[0];
+let contactScreen = document.getElementById("contactScreen");
 let alertBox = document.getElementById("alert");
 
 
@@ -69,43 +71,40 @@ document.getElementById("loginBtn").onclick = async function () {
         if (loadMapScreen(user)) {
             await loadContacts(currentUserInformation, "user")
             displayAlert("Login successful");
+            changeTitle("Map");
         }
     }
 }
 /**
  * Show all Contacts Button event. Shows all public contacts (or all contacts as an admin)
  */
-document.getElementById("showAllContactsBtn").onclick = function() {
-    if(currentUserInformation.getRole() === "admin") {
-        loadContacts(currentUserInformation, "admin");
-    }
-    else if(currentUserInformation.getRole() === "normal") {
-        loadContacts(currentUserInformation, "allPublic");
+document.getElementById("showAllContactsBtn").onclick = async function () {
+    if (currentUserInformation.getRole() === "admin") {
+        await loadContacts(currentUserInformation, "admin");
+    } else if (currentUserInformation.getRole() === "normal") {
+        await loadContacts(currentUserInformation, "allPublic");
     }
 }
 
 /**
  * Show own Contacts Button event. Shows all owned contacts
  */
-document.getElementById("showMyContactsBtn").onclick = function() {
-    loadContacts(currentUserInformation, "user");
+document.getElementById("showMyContactsBtn").onclick = async function () {
+    await loadContacts(currentUserInformation, "user");
 }
 /**
  * Back button event for the add contact form.
  */
 document.getElementById("backButtonAdd").onclick = function(event) {
     event.preventDefault();
-    mapContainer.style.display = "grid";
-    addContactForm.style.display = "none";
+    changeDisplayedScreen("map_container", "addContactForm", "grid");
 }
 /**
  * Back button event for the update contact form.
  */
 document.getElementById("backButtonUpdate").onclick = function(event) {
     event.preventDefault();
-    mapContainer.style.display = "grid";
-    updateContactForm.style.display = "none";
-
+    changeDisplayedScreen("map_container", "updateContactForm", "grid");
     setCheckboxValue(document.querySelector('.privateCheckboxU:checked'), false);
 }
 /**
@@ -113,8 +112,7 @@ document.getElementById("backButtonUpdate").onclick = function(event) {
  */
 document.getElementById("addContactBtn").onclick = function (event) {
     event.preventDefault();
-    mapContainer.style.display = "none";
-    addContactForm.style.display = "grid";
+    changeDisplayedScreen("addContactForm", "map_container", "grid");
 
 }
 /**
@@ -124,26 +122,34 @@ document.getElementById("addButton").onclick = async function(event) {
     event.preventDefault();
     await addNewContact();
 
-
 }
+/**
+ * // Delete Contact Event
+ */
 document.getElementById("deleteContactButton").onclick = async function(event) {
     event.preventDefault();
     await deleteContact(selectedContact);
-    updateContactForm.style.display = "none";
-    mapContainer.style.display = "grid";
+    changeDisplayedScreen("map_container", "updateContactForm", "grid");
 }
+/**
+ * // Closes the notification alert
+ */
 document.getElementById("notifyCloseButton").onclick = function(event) {
     event.preventDefault();
     hideAlert();
 }
-document.getElementById("logoutBtn").onclick = function(event) {
+document.getElementsByClassName("logoutBtn")[0].onclick = function(event) {
     event.preventDefault();
     loadLoginScreen();
     logout();
-
 }
-
-
+/**
+ * // Update Contact Event
+ */
+document.getElementById("updateContactButton").onclick = async function(event) {
+    event.preventDefault();
+    await updateContact();
+}
 
 /**
  * Loads the map screen and sets the current user information. Hides the login screen and shows the map screen. Also sets
@@ -153,9 +159,8 @@ document.getElementById("logoutBtn").onclick = function(event) {
  */
 let loadMapScreen = (userPOJO) => {
     currentUserInformation = new User(userPOJO.name, userPOJO.role);
-    loginForm.style.display = "none";
-    mapContainer.style.display = "grid";
-    welcomeMessageLabel.innerText = "Welcome, " + currentUserInformation.getName() + ". Role: " + currentUserInformation.getRole();
+    changeDisplayedScreen("map_container", "login", "grid");
+    welcomeMessageLabel.innerHTML = "Welcome, " + currentUserInformation.getName() + ". Role: " + currentUserInformation.getRole();
     return true;
 }
 
@@ -199,7 +204,7 @@ let updateList = (contactEntry) => {
     listItems.forEach(function(item) {
         item.onclick = function() {
             selectedContact = loadedContacts.find(o => o["firstName"] + " " + o["lastName"] === this.innerText);
-            updateContact(selectedContact);
+            displayUpdateContactForm(selectedContact);
         }
     });
 }
@@ -217,7 +222,6 @@ let addMarker = (contact, lat, lng) => {
     });
 
     markerList.push([contact,marker])
-
 
 }
 let removeMarker = (contact)=>{
@@ -238,64 +242,67 @@ let clearMarkerList = ()=>{
 }
 
 let addNewContact = async () => {
+    //TODO: refactoring
 
     let firstnameForm = document.getElementById("firstName");
     let lastnameForm = document.getElementById("lastName");
-    let streetForm = document.getElementById("streetAndNumber");
+    let streetForm = document.getElementById("street");
     let zipcodeForm = document.getElementById("zipcode");
     let cityForm = document.getElementById("city");
     let countryForm = document.getElementById("country");
     let phoneForm = document.getElementById("phone");
-    let dobForm = document.getElementById("dob");
+    let dobForm = document.getElementById("dateOfBirth");
     let privateForm = document.querySelector('.privateCheckbox:checked')
     let errorLabel = document.getElementById("addContactErrorLabel");
     const requiredFields = [firstnameForm, lastnameForm, streetForm, zipcodeForm, cityForm];
+
     // Checks if all fields are filled out by the user
     if(!checkInput(firstnameForm, lastnameForm, streetForm, zipcodeForm, cityForm)) {
         // Returns true if checkbox was clicked, false if not
         let checked = privateForm != null;
-
+        // Wait for coordinates from the API
         let latLng = await getCoordinates(streetForm.value, zipcodeForm.value, cityForm.value);
-        console.log("Before add" + latLng);
-
-        let response = await fetch("/contacts", {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                firstName: firstnameForm.value,
-                lastName: lastnameForm.value,
-                street: streetForm.value,
-                zipcode: zipcodeForm.value,
-                city: cityForm.value,
-                country: countryForm.value,
-                phone: phoneForm.value,
-                dob: dobForm.value,
-                isPublic: checked,
-                owner: currentUserInformation.getName(),
-                lat: latLng.lat,
-                lng: latLng.lng
+        // If address is not found, show error message
+        if(latLng === false) {
+            changeDisplayedScreen("map_container", "addContactForm", "grid");
+            displayAlert("Could not find address. Please check your input!", "error");
+        }
+        else {
+            let response = await fetch("/contacts", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    firstName: firstnameForm.value.replace(/\s+/g, ''),
+                    lastName: lastnameForm.value.replace(/\s+/g, ''),
+                    street: streetForm.value,
+                    zipcode: zipcodeForm.value.replace(/\s+/g, ''),
+                    city: cityForm.value,
+                    country: countryForm.value,
+                    phone: phoneForm.value.replace(/\s+/g, ''),
+                    dateOfBirth: dobForm.value,
+                    isPublic: checked,
+                    owner: currentUserInformation.getName(),
+                    lat: latLng.lat,
+                    lng: latLng.lng
+                })
             })
-        })
-        if(response.status === 201) {
-            errorLabel.innerText = "Contact added successfully";
-            errorLabel.style.color = "green";
-            document.getElementById("map_container").style.display = "grid";
-            document.getElementById("addContactForm").style.display = "none";
-            await loadContacts(currentUserInformation, "user");
-            // Clears input
-            firstnameForm.value = "";
-            lastnameForm.value = "";
-            streetForm.value = "";
-            zipcodeForm.value = "";
-            cityForm.value = "";
-            countryForm.value = "";
-            phoneForm.value = "";
-            dobForm.value = "";
-            setCheckboxValue(privateForm, false);
-            // Resets Error Text
-            errorLabel.innerText = "";
+            if(response.status === 201) {
+                document.getElementById("map_container").style.display = "grid";
+                document.getElementById("addContactForm").style.display = "none";
+                await loadContacts(currentUserInformation, "user");
+                // Clears input fields
+                clearInput(requiredFields, updateContactForm, errorLabel);
+                displayAlert("Contact added successfully", "success");
+            }
+            else {
+                document.getElementById("map_container").style.display = "grid";
+                document.getElementById("addContactForm").style.display = "none";
+                clearInput(requiredFields, updateContactForm, errorLabel);
+                displayAlert(await response.text(), "error");
+            }
         }
     }
+    // If not all required fields are filled out, show error message
     else {
         errorLabel.innerText = "Please fill out all required fields!";
         requiredFields.forEach(element => {
@@ -308,12 +315,12 @@ let addNewContact = async () => {
  * @param contact Contact Object to be deleted
  */
 let deleteContact = async (contact) => {
-    console.log(contact["_id"])
     let response = await fetch("/contacts/" + contact["_id"], {
         method: "DELETE"
     })
     if(response.status === 204) {
         await loadContacts(currentUserInformation, "user");
+        displayAlert("Contact deleted successfully", "success");
     }
 }
 
@@ -354,8 +361,7 @@ let getCoordinates = (street, zipcode, city) => {
             lng = await response.results[0].location["lng"]
             console.log("Received" + lat, lng)
             return {lat: lat, lng: lng}
-        }).catch(async err => {
-            alert(err);
+        }).catch(async () => {
             return false
         });
 
@@ -368,9 +374,11 @@ function setCheckboxValue(checkbox,value) {
         checkbox.click();
 }
 
-let displayAlert = (message) => {
-    alertBox.style.display = "block";
+let displayAlert = (message, mode) => {
+
+    mode === "error" ? alertBox.children[0].style.color = "red" : alertBox.children[0].style.color = "green"
     alertBox.children[0].innerText = message;
+    alertBox.style.display = "block";
 }
 
 let hideAlert = () => {
@@ -386,24 +394,131 @@ let loadLoginScreen = () => {
     mapContainer.style.display = "none";
     addContactForm.style.display = "none";
     updateContactForm.style.display = "none";
+    contactScreen.style.display = "none";
 }
 
+let displayUpdateContactForm = (ContactEntry) => {
 
-let updateContact = (ContactEntry) => {
+    let deleteBtn = document.getElementById("deleteContactButton");
+    let updateBtn = document.getElementById("updateContactButton");
 
-    document.getElementById("map_container").style.display = "none";
-    document.getElementById("updateContactForm").style.display = "grid";
-    // Showing data
-    document.getElementById("firstNameU").value = ContactEntry["firstName"];
-    document.getElementById("lastNameU").value = ContactEntry["lastName"];
-    document.getElementById("streetAndNumberU").value = ContactEntry["street"];
-    document.getElementById("countryU").value = ContactEntry["country"];
-    document.getElementById("zipcodeU").value = ContactEntry["zipcode"];
-    document.getElementById("cityU").value = ContactEntry["city"];
-    document.getElementById("phoneU").value = ContactEntry["phone"];
-    document.getElementById("dobU").value = ContactEntry["dateOfBirth"];
-    let box = document.getElementById("privateU")
-    if(ContactEntry["isPublic"] === true) {
-        setCheckboxValue(box, ContactEntry["isPublic"]);
+    let inputFields = updateContactForm.elements
+    for(let i = 0; i < 9; i++) {
+        inputFields[i+1].value = ContactEntry[identifier[i]];
     }
+    setCheckboxValue(inputFields[9], ContactEntry["isPublic"])
+    // Hides the update and delete buttons when the user has no persmission to update or delete the contact
+    if(currentUserInformation.getRole() !== "admin" && ContactEntry["owner"]!==currentUserInformation.getName()) {
+        deleteBtn.style.display = "none";
+        updateBtn.style.display = "none";
+    }
+    else {
+        deleteBtn.style.display = "inline";
+        updateBtn.style.display = "inline";
+    }
+    changeDisplayedScreen("updateContactForm", "map_container", "grid");
+}
+
+let updateContact = async () => {
+
+    let errorLabel = document.getElementById("updateContactErrorLabel");
+    let firstnameUpdate = document.getElementById("firstNameU");
+    let lastnameUpdate = document.getElementById("lastNameU");
+    let streetUpdate = document.getElementById("streetU");
+    let zipUpdate = document.getElementById("zipcodeU");
+    let cityUpdate = document.getElementById("cityU");
+    let checked = document.querySelector('.privateCheckboxU:checked');
+    const requiredFields = [firstnameUpdate, lastnameUpdate, streetUpdate, zipUpdate, cityUpdate];
+    let lat;
+    let lng;
+
+    if (!checkInput(firstnameUpdate, lastnameUpdate, streetUpdate, zipUpdate, cityUpdate)) {
+
+        let latLng;
+
+        //TODO: refactor
+
+        // When the user enters a new address, new coordinates are requested
+        if (selectedContact["street"] !== streetUpdate.value || selectedContact["zipcode"] !== zipUpdate.value || selectedContact["city"] !== cityUpdate.value) {
+            latLng = await getCoordinates(streetUpdate.value, zipUpdate.value, cityUpdate.value);
+            lat = latLng.lat;
+            lng = latLng.lng;
+        } else {
+            // Old coordinates are used
+            lat = selectedContact["lat"];
+            lng = selectedContact["lng"];
+        }
+        if(latLng === false) {
+            changeDisplayedScreen("map_container", "updateContactForm", "grid");
+            clearInput(requiredFields, updateContactForm, errorLabel)
+            displayAlert("Could not find address. Please check your input!", "error");
+        }
+        else {
+            let response = await fetch("/contacts/" + selectedContact["_id"], {
+                method: "PUT",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    firstName: firstnameUpdate.value,
+                    lastName: lastnameUpdate.value,
+                    street: streetUpdate.value,
+                    zipcode: zipUpdate.value,
+                    city: cityUpdate.value,
+                    country: updateContactForm.elements[6].value,
+                    phone: updateContactForm.elements[7].value,
+                    dateOfBirth: updateContactForm.elements[8].value,
+                    isPublic: checked != null,
+                    owner: currentUserInformation.getName(),
+                    lat: lat,
+                    lng: lng
+                })});
+            if (response.status === 204) {
+                await loadContacts(currentUserInformation, "user");
+                changeDisplayedScreen("map_container", "updateContactForm", "grid");
+                displayAlert("Contact updated successfully", "success");
+                clearInput(requiredFields, updateContactForm, errorLabel)
+            } else {
+                changeDisplayedScreen("map_container", "updateContactForm", "grid");
+                await displayAlert("Error updating contact" + await response, "error");
+                clearInput(requiredFields, updateContactForm, errorLabel)
+            }
+        }
+    }
+    else {
+        errorLabel.innerText = "Please fill out all required fields!";
+        requiredFields.forEach(element => {
+            element.style.borderColor = "red";
+        })
+    }
+}
+/**
+ * Resets a given input form
+ * @param fields required fields
+ * @param form form to be reset
+ * @param errLabel error label
+ */
+let clearInput = (fields, form, errLabel) => {
+    let inputFields = form.elements
+    for(let i = 1; i < 9; i++) {
+        inputFields[i].value = "";
+    }
+    setCheckboxValue(inputFields[9], false);
+    // Resets Error Text
+    errLabel.innerText = "";
+    fields.forEach(element => {
+        element.style.borderColor = "";
+    })
+}
+/**
+ * Changes the displayed screen to the given screen and hides the other screen.
+ * @param screenToDisplay screen to be displayed
+ * @param screenToHide current shown screen to be hidden
+ * @param mode CSS display mode (grid, flex, block, none)
+ */
+let changeDisplayedScreen = (screenToDisplay, screenToHide, mode) => {
+    document.getElementById(screenToHide).style.display = "none";
+    document.getElementById(screenToDisplay).style.display = mode;
+}
+
+let changeTitle = (title) => {
+    document.title = "AdViz | " + title;
 }
