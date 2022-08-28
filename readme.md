@@ -26,8 +26,34 @@ HTML, CSS, JavaScript, NodeJS, ExpressJS, MongoDB, GeoCoding, Google Maps API
 # How to Install and Use
 Here is a simple step-by-step guide to install and try out ADViz locally
 ### 1. Code Checkout
+At first, you need to check out the repository. Open a terminal or Git CLI and navigate to a directory where you want to install ADViz.
+Then run the following command:
+```bash
+git clone https://github.com/jutnhbr/biri_justin-WAD2022.git
+```
+You can see the URL and GitHub CLI Link after clicking on the green````Code```` Button. If you want, you can also use any commit hash
+to jump to different versions of the code:
+```bash
+git clone `URLTORepository`
+cd `into your cloned folder`
+git checkout commithash
+```
 ### 2. Installation of Dependencies and packages
+Make sure you have NodeJS and NPM installed. If not, download and install them from the dependencies list above.
+Open up the cloned repository in your favorite code editor and run the following command:
+```bash 
+npm install
+``` 
+Make sure to take a look at the index.html file in /public/index.html and check
+if the IDE asks you to install additional UNPKG packages like the Font Awesome Script and the Maps JavaScript API Loader which is needed to load the Google Maps API.
 ### 3. Creating the Database and importing needed data
+Make sure you have ````MongoDB```` installed. You need a local MongoDB instance to run ADViz.
+````MongoDB Shell```` is also needed to start the local instance. If you wish, you can also use ````MongoDB Compass````, a GUI for MongoDB.
+
+...
+
+...
+
 ### 4. Starting the Server
 We use Nodemon to start the Server.
 To start the Server you need to run the following command in the terminal:
