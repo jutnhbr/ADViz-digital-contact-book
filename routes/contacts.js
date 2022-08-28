@@ -45,7 +45,7 @@ router.get('/', function(req, res) {
     }
     // Read all public contacts
     else if(requestMode === "allPublic") {
-        db.find({isPublic: true}).toArray(function(err, result) {
+        db.find({$or: [{isPublic: true}, {owner: userData}]}).toArray(function(err, result) {
             if (err) {
                 res.status(500).send("Error: Internal Server Error");
             }
@@ -86,6 +86,21 @@ router.delete('/:id', function(req, res) {
     }
 );
 
+router.put('/:id', function(req, res) {
+    const db = database.getDatabase().collection('contacts');
+    const data = {$set:req.body}
 
+    db.updateOne(
+        {_id: ObjectId(req.params.id)},
+        data,
+        function(err, result) {
+        if(err) {
+            res.status(500).send("Error: Internal Server Error")
+        } else {
+            console.log("Contact Updated...")
+            res.status(204).json(result)
+        }
+    })
+});
 
 module.exports = router;
