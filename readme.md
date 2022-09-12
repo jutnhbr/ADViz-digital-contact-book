@@ -25,13 +25,18 @@ HTML, CSS, JavaScript, NodeJS, ExpressJS, MongoDB, GeoCoding, Google Maps API
 
 # How to Install and Use
 Here is a simple step-by-step guide to install and try out ADViz locally
+### 0. Prerequisites
+Make sure you have ````NodeJS, MongoDB and MongoShell```` installed on your machine. If not, please refer to the links above 
+and follow the tutorials for your OS.
+If you wish, you can also use ````MongoDB Compass````, a GUI for MongoDB.
+
 ### 1. Code Checkout
 At first, you need to check out the repository. Open a terminal or Git CLI and navigate to a directory where you want to install ADViz.
 Then run the following command:
 ```bash
 git clone https://github.com/jutnhbr/biri_justin-WAD2022.git
 ```
-You can see the URL and GitHub CLI Link after clicking on the green````Code```` Button. If you want, you can also use any commit hash
+You can see the URL and GitHub CLI Link after clicking on the green````Code```` Button. You can also use any commit hash
 to jump to different versions of the code:
 ```bash
 git clone `URLTORepository`
@@ -39,28 +44,34 @@ cd `into your cloned folder`
 git checkout commithash
 ```
 ### 2. Installation of Dependencies and packages
-Make sure you have NodeJS and NPM installed. If not, download and install them from the dependencies list above.
-Open up the cloned repository in your favorite code editor and run the following command:
+Open up the cloned repository in your favorite code editor and run the following command in your terminal:
 ```bash 
 npm install
 ``` 
 Make sure to take a look at the index.html file in /public/index.html and check
-if the IDE asks you to install additional UNPKG packages like the Font Awesome Script and the Maps JavaScript API Loader which is needed to load the Google Maps API.
+if the IDE asks you to install additional ```UNPKG packages``` like the Font Awesome Script and the Maps JavaScript API Loader which is needed to load the Google Maps API.
+
 ### 3. Creating the Database and importing needed data
-Make sure you have ````MongoDB```` installed. You need a local MongoDB instance to run ADViz.
-````MongoDB Shell```` is also needed to start the local instance. If you wish, you can also use ````MongoDB Compass````, a GUI for MongoDB.
+You need a local ```MongoDB``` instance and ```MongoSh``` to run ADViz. Make sure everything is properly installed. 
 
-...
+If MongoDB is not running as a service / daemon on your machine, you can start it with the following command:
+```mongod --dbpath *PATH TO YOUR DB/DATA FOLDER*``` (The commands might differ on other Operating Systems)
 
-...
+If the local MongoDB instance is running, you can open a new terminal and navigate to the folder where you cloned the repository
+and execute the init script:
+```mongosh localhost:27017/adviz initDB.js ```
+#### PLEASE NOTE: If you are using MongoDB below Version 6.0, you have to use ```mongo``` instead of ```mongosh```.
+
+Now the database should be created and the needed collections should be filled with data. 
 
 ### 4. Starting the Server
 We use Nodemon to start the Server.
-To start the Server you need to run the following command in the terminal:
+
+To start the Server you need to run the following command in the terminal:  
 ```npm dev start```
-This will run the Dev Script via Nodemon and also allows to automatically restart the Server when you change the code. 
-If you wish to manually stop the server, press ```Strg+C``` in the terminal and enter ```Y```. If everything worked fine, 
-you should see the following logs in the console:
+
+If you wish to manually stop the server, press ```Strg+C```. If everything worked fine, 
+you should see the following logs in the server console:
 ```
 Successfully connected to AdViz Database!
 Server connection established! 
@@ -83,4 +94,9 @@ After you have logged in, you should see the map screen with your own contacts s
 Switch the shown contacts by clicking on the corresponding buttons ```Show all contacts``` or ```Show my contacts```.
 You can add new contacts by clicking the ```Add Contact``` button. Fill out all the fields and click the ```Save``` button.
 (Not all fields are required, if some input is missing you will get notified).
+
 # Troubleshooting
+- If the map or the markers are not shown, make sure you have installed the Maps JavaScript API Loader UNPKG package as mentioned above
+- If you are using a different port than 27017, you have to change the port in the ```initDB.js``` script.
+- The Map might have a "Developer Mode" watermark. This is normal due to the API Key restrictions. You can replace the API Key in the ```index.html``` file with your own key if needed. The map should still work though.
+- If you cant login, make sure you have created the database and imported the data using the script. If you are using MongoDB Compass, you can see the data in the Compass GUI. Alternatively, you can use the ```mongo (below 6.0)``` or ```mongosh (6.0+)``` shell commands to check if the data is there.
