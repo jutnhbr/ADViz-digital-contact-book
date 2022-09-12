@@ -10,8 +10,6 @@ window.onload = async function () {
     loadLoginScreen()
     hideAlert()
     await initMap();
-    // console.log(document.getElementsByClassName("headerButtons")[1])
-
 }
 
 // HTML Elements
@@ -22,7 +20,6 @@ let mapContainer = document.getElementById("map_container");
 let addContactForm = document.getElementById("addContactForm");
 let updateContactForm = document.getElementById("updateContactForm");
 let welcomeMessageLabel = document.getElementsByClassName("headerWelcomeMessage")[0];
-let contactScreen = document.getElementById("contactScreen");
 let alertBox = document.getElementById("alert");
 
 
@@ -69,7 +66,9 @@ document.getElementById("loginBtn").onclick = async function () {
     } else {
         let user = await response.json();
         if (loadMapScreen(user)) {
-            await loadContacts(currentUserInformation, "user")
+            await loadContacts(currentUserInformation, "user");
+            usernameField.value = "";
+            passwordField.value = "";
             displayAlert("Login successful");
             changeTitle("Map");
         }
@@ -140,9 +139,18 @@ document.getElementById("notifyCloseButton").onclick = function(event) {
 }
 document.getElementsByClassName("logoutBtn")[0].onclick = function(event) {
     event.preventDefault();
-    loadLoginScreen();
+    changeDisplayedScreen("login", "map_container", "grid");
     logout();
 }
+document.getElementsByClassName("headerButtons")[1].onclick = function(event) {
+    event.preventDefault();
+    displayAlert("Nothing to see here :)", "info");
+}
+document.getElementsByClassName("headerButtons")[2].onclick = function(event) {
+    event.preventDefault();
+    displayAlert("Nothing to see here :)", "info");
+}
+
 /**
  * // Update Contact Event
  */
@@ -200,7 +208,7 @@ let updateList = (contactEntry) => {
     document.getElementById("cList").appendChild(newEntry);
 
     // Adds onClickEvents for each item in the List
-    let listItems  = document.querySelectorAll("ul li");
+    let listItems  = document.querySelectorAll("#cList li");
     listItems.forEach(function(item) {
         item.onclick = function() {
             selectedContact = loadedContacts.find(o => o["firstName"] + " " + o["lastName"] === this.innerText);
@@ -242,7 +250,6 @@ let clearMarkerList = ()=>{
 }
 
 let addNewContact = async () => {
-    //TODO: refactoring
 
     let firstnameForm = document.getElementById("firstName");
     let lastnameForm = document.getElementById("lastName");
@@ -287,16 +294,14 @@ let addNewContact = async () => {
                 })
             })
             if(response.status === 201) {
-                document.getElementById("map_container").style.display = "grid";
-                document.getElementById("addContactForm").style.display = "none";
+                changeDisplayedScreen("map_container", "addContactForm", "grid");
                 await loadContacts(currentUserInformation, "user");
                 // Clears input fields
                 clearInput(requiredFields, updateContactForm, errorLabel);
                 displayAlert("Contact added successfully", "success");
             }
             else {
-                document.getElementById("map_container").style.display = "grid";
-                document.getElementById("addContactForm").style.display = "none";
+                changeDisplayedScreen("map_container", "addContactForm", "grid");
                 clearInput(requiredFields, updateContactForm, errorLabel);
                 displayAlert(await response.text(), "error");
             }
@@ -388,13 +393,13 @@ let hideAlert = () => {
 let logout = () => {
     currentUserInformation = null;
     loadedContacts = [];
+    changeTitle("Login");
 }
 
 let loadLoginScreen = () => {
     mapContainer.style.display = "none";
     addContactForm.style.display = "none";
     updateContactForm.style.display = "none";
-    contactScreen.style.display = "none";
 }
 
 let displayUpdateContactForm = (ContactEntry) => {
@@ -407,7 +412,7 @@ let displayUpdateContactForm = (ContactEntry) => {
         inputFields[i+1].value = ContactEntry[identifier[i]];
     }
     setCheckboxValue(inputFields[9], ContactEntry["isPublic"])
-    // Hides the update and delete buttons when the user has no persmission to update or delete the contact
+    // Hides the update and delete buttons when the user has no permission to update or delete the contact
     if(currentUserInformation.getRole() !== "admin" && ContactEntry["owner"]!==currentUserInformation.getName()) {
         deleteBtn.style.display = "none";
         updateBtn.style.display = "none";
@@ -435,8 +440,6 @@ let updateContact = async () => {
     if (!checkInput(firstnameUpdate, lastnameUpdate, streetUpdate, zipUpdate, cityUpdate)) {
 
         let latLng;
-
-        //TODO: refactor
 
         // When the user enters a new address, new coordinates are requested
         if (selectedContact["street"] !== streetUpdate.value || selectedContact["zipcode"] !== zipUpdate.value || selectedContact["city"] !== cityUpdate.value) {
