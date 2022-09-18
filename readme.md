@@ -12,15 +12,14 @@ There are 2 valid User logins: Admina (admin role) and Normalo (normal user role
 More information in the Installation Guide.
 ### Technologies
 HTML, CSS, JavaScript, NodeJS, ExpressJS, MongoDB, GeoCoding, Google Maps API
-
 # Dependencies / APIs / Frameworks
 
-[NodeJS](https://nodejs.org/en/) \
-[ExpressJS](https://expressjs.com/) \
-[MongoDB](https://www.mongodb.com/) \
-[Nodemon](https://nodemon.io/) \
-[TrueWay GeoCoding](https://rapidapi.com/trueway/api/trueway-geocoding/) \
-[Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/overview) \
+[NodeJS](https://nodejs.org/en/), 
+[ExpressJS](https://expressjs.com/), 
+[MongoDB](https://www.mongodb.com/),
+[Nodemon](https://nodemon.io/),
+[TrueWay GeoCoding](https://rapidapi.com/trueway/api/trueway-geocoding/),
+[Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/overview),
 [Maps JS API Loader](https://www.npmjs.com/package/@googlemaps/js-api-loader)
 
 # How to Install and Use
@@ -30,14 +29,15 @@ Make sure you have ````NodeJS, MongoDB and MongoShell```` installed on your mach
 and follow the tutorials for your OS.
 If you wish, you can also use ````MongoDB Compass````, a GUI for MongoDB.
 
+#### PLEASE NOTE: There might be differences in the commands for different versions of NodeJS and MongoDB.
+
 ### 1. Code Checkout
-At first, you need to check out the repository. Open a terminal or Git CLI and navigate to a directory where you want to install ADViz.
-Then run the following command:
+At first, you need to check out the repository. Open a terminal or Git CLI and navigate to a directory where you want to install ADViz
+and run the following command:
 ```bash
 git clone https://github.com/jutnhbr/biri_justin-WAD2022.git
 ```
-You can see the URL and GitHub CLI Link after clicking on the green````Code```` Button. You can also use any commit hash
-to jump to different versions of the code:
+Or using the commit hash: 
 ```bash
 git clone `URLTORepository`
 cd `into your cloned folder`
@@ -55,7 +55,7 @@ if the IDE asks you to install additional ```UNPKG packages``` like the Font Awe
 You need a local ```MongoDB``` instance and ```MongoSh``` to run ADViz. Make sure everything is properly installed. 
 
 If MongoDB is not running as a service / daemon on your machine, you can start it with the following command:
-```mongod --dbpath *PATH TO YOUR DB/DATA FOLDER*``` (The commands might differ on other Operating Systems)
+```mongod --dbpath *PATH TO YOUR DB/DATA FOLDER*``` (Check the MongoDB documentation for more details)
 
 If the local MongoDB instance is running, you can open a new terminal and navigate to the folder where you cloned the repository
 and execute the init script:
@@ -65,10 +65,9 @@ and execute the init script:
 Now the database should be created and the needed collections should be filled with data. 
 
 ### 4. Starting the Server
-We use Nodemon to start the Server.
-
+We use Nodemon to start the Server. This also automatically restarts the server if you make changes to the code.
 To start the Server you need to run the following command in the terminal:  
-```npm dev start```
+```npm run dev```
 
 If you wish to manually stop the server, press ```Strg+C```. If everything worked fine, 
 you should see the following logs in the server console:
@@ -91,9 +90,6 @@ Login attempt for user: admina ...
 Login successful ... Sending response...
 ```
 After you have logged in, you should see the map screen with your own contacts shown on the left and on the map.
-Switch the shown contacts by clicking on the corresponding buttons ```Show all contacts``` or ```Show my contacts```.
-You can add new contacts by clicking the ```Add Contact``` button. Fill out all the fields and click the ```Save``` button.
-(Not all fields are required, if some input is missing you will get notified).
 
 # Troubleshooting
 - If the map or the markers are not shown, make sure you have installed the Maps JavaScript API Loader UNPKG package as mentioned above
