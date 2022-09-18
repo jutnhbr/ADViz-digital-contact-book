@@ -29,7 +29,7 @@ Make sure you have ````NodeJS, MongoDB and MongoShell```` installed on your mach
 and follow the tutorials for your OS.
 If you wish, you can also use ````MongoDB Compass````, a GUI for MongoDB.
 
-#### PLEASE NOTE: There might be differences in the commands for different versions of NodeJS and MongoDB.
+#### PLEASE NOTE: There might be differences in the commands for different versions of MongoDB. This guide refers to Version 6.0
 
 ### 1. Code Checkout
 At first, you need to check out the repository. Open a terminal or Git CLI and navigate to a directory where you want to install ADViz
