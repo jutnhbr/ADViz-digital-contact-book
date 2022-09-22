@@ -55,7 +55,7 @@ if the IDE asks you to install additional ```UNPKG packages``` like the Font Awe
 You need a local ```MongoDB``` instance and ```MongoSh``` to run ADViz. Make sure everything is properly installed. 
 
 If MongoDB is not running as a service / daemon on your machine, you can start it with the following command:
-```mongod --dbpath *PATH TO YOUR DB/DATA FOLDER*``` (Check the MongoDB documentation for more details)
+```mongod --dbpath *PATH TO YOUR DB/DATA FOLDER*``` (Standard path is C:\data\db)
 
 If the local MongoDB instance is running, you can open a new terminal and navigate to the folder where you cloned the repository
 and execute the init script:
