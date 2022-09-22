@@ -15,7 +15,7 @@ exports.connectDB = function(url, done) {
 
     MongoClient.connect(url, function(err, db) {
         if (err) return done(err)
-        state.database = db.db("adviz");
+        state.database = db.db("advizDB");
         console.log("Successfully connected to AdViz Database!")
         done()
     })

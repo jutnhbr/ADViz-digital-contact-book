@@ -1,5 +1,5 @@
 // Create and Connect to the database
-let database = connect('localhost:27017/adviz');
+let database = connect('localhost:27017/advizDB');
 
 // Adding the 2 standard users
 database.users.insertMany([
