@@ -4,7 +4,7 @@ Student: Justin Steven Herbrich \
 Matriculation Number: 577953 
 
 ### Description
-AdViz is full Stack Web Application for a digital Contact-book with GeoCoding and Maps Implementation.
+ADViz is a full Stack Web Application for a digital Contact-book with GeoCoding and Maps Implementation.
 As a User you can create, edit, delete and search for Contacts, see them and their location on a Map. The Server provides 
 several endpoints / HTTP requests for the User to interact with the Database.
 
