@@ -59,7 +59,7 @@ If MongoDB is not running as a service / daemon on your machine, you can start i
 
 If the local MongoDB instance is running, you can open a new terminal and navigate to the folder where you cloned the repository
 and execute the init script:
-```mongosh localhost:27017/adviz initDB.js ```
+```mongosh localhost:27017/advizDB initDB.js ```
 #### PLEASE NOTE: If you are using MongoDB below Version 6.0, you have to use ```mongo``` instead of ```mongosh```.
 
 Now the database should be created and the needed collections should be filled with data. 
@@ -94,5 +94,5 @@ After you have logged in, you should see the map screen with your own contacts s
 # Troubleshooting
 - If the map or the markers are not shown, make sure you have installed the Maps JavaScript API Loader UNPKG package as mentioned above
 - If you are using a different port than 27017, you have to change the port in the ```initDB.js``` script.
-- The Map might have a "Developer Mode" watermark. This is normal due to the API Key restrictions. You can replace the API Key in the ```index.html``` file with your own key if needed. The map should still work though.
+- The Map might have a "Developer Mode" watermark. This is normal due to the API Key restrictions. You can replace the API Key in the ```index.html``` file with your own key if needed. The map should still work.
 - If you cant login, make sure you have created the database and imported the data using the script. If you are using MongoDB Compass, you can see the data in the Compass GUI. Alternatively, you can use the ```mongo (below 6.0)``` or ```mongosh (6.0+)``` shell commands to check if the data is there.
