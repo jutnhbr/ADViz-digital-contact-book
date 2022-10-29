@@ -33,7 +33,7 @@ If you wish, you can also use ````MongoDB Compass````, a GUI for MongoDB.
 At first, you need to check out the repository. Open a terminal or Git CLI and navigate to a directory where you want to install ADViz
 and run the following command:
 ```bash
-git clone https://github.com/jutnhbr/biri_justin-WAD2022.git
+git clone https://github.com/jutnhbr/ADViz_WebApp.git
 ```
 Or using the commit hash: 
 ```bash
