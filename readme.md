@@ -1,7 +1,5 @@
 # ADViz - Digital Contact-book
 
-Student: Justin Steven Herbrich \
-Matriculation Number: 577953 
 
 ### Description
 ADViz is a full Stack Web Application for a digital Contact-book with GeoCoding and Maps Implementation.
