@@ -48,6 +48,7 @@ npm install
 ``` 
 Make sure to take a look at the index.html file in /public/index.html and check
 if the IDE asks you to install additional ```UNPKG packages``` like the Font Awesome Script and the Maps JavaScript API Loader which is needed to load the Google Maps API.
+Now  add your Google Maps JS Api key in public/js/function.js (Line 35)
 
 ### 3. Creating the Database and importing needed data
 You need a local ```MongoDB``` instance and ```MongoSh``` to run ADViz. Make sure everything is properly installed. 
