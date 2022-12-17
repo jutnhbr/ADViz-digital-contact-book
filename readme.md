@@ -2,7 +2,7 @@
 
 
 ### Description
-ADViz is a full Stack Web Application for a digital Contact-book with GeoCoding and Maps Implementation.
+ADViz is a full Stack singlepage Web Application for a digital Contact-book with GeoCoding and Maps Implementation.
 As a User you can create, edit, delete and search for Contacts, see them and their location on a Map. The Server provides 
 several endpoints / HTTP requests for the User to interact with the Database.
 
@@ -47,8 +47,8 @@ Open up the cloned repository in your favorite code editor and run the following
 npm install
 ``` 
 Make sure to take a look at the index.html file in /public/index.html and check
-if the IDE asks you to install additional ```UNPKG packages``` like the Font Awesome Script and the Maps JavaScript API Loader which is needed to load the Google Maps API.
-Now  add your Google Maps JS Api key in public/js/function.js (Line 35)
+if the IDE asks you to install additional ```UNPKG packages``` like the Font Awesome Script and the Maps JavaScript API Loader which is needed to load the Google Maps API.\
+Now add your Google Maps JS Api key in public/js/function.js (Line 35). You also need to add a GeoCoding API Key (Line 356). I used and tested this WebApp with TrueWay Gecoding.
 
 ### 3. Creating the Database and importing needed data
 You need a local ```MongoDB``` instance and ```MongoSh``` to run ADViz. Make sure everything is properly installed. 
