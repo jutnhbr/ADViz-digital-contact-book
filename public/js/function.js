@@ -357,8 +357,8 @@ let getCoordinates = (street, zipcode, city) => {
     return fetch(url, {
         method: 'GET',
         headers: {
-            'X-RapidAPI-Host': 'trueway-geocoding.p.rapidapi.com',
-            'X-RapidAPI-Key': '6d4ee9038amshd48d6b7ff082733p15d30ajsnf3fbcf93f965'
+            'X-RapidAPI-Host': '',
+            'X-RapidAPI-Key': ''
         }
     }).then(response => response.json())
         .then(async response => {
